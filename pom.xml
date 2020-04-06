@@ -8,5 +8,10 @@
     <artifactId>changgou-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
+    <description>电商项目的父工程</description>
+    <developers>
+        <developer>
+            <name>lenovo</name>
+        </developer>
+    </developers>
 </project>
