@@ -1,6 +1,8 @@
 package org.changgou.goods.service;
 
+import com.github.pagehelper.PageInfo;
 import org.changgou.goods.pojo.Brand;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -23,11 +25,12 @@ public interface TbBrandService {
     /**
      * 查询多条数据
      *
+     * @param brand  品牌对象
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
-    List<Brand> queryAllByLimit(int offset, int limit);
+    List<Brand> queryAllByLimit(Brand brand, int offset, int limit);
 
     /**
      * 新增数据
@@ -52,5 +55,19 @@ public interface TbBrandService {
      * @return 是否成功
      */
     boolean deleteById(Integer id);
-
+    /**
+     * 查询多条数据
+     *
+     * @param example  查询条数
+     * @return 对象列表
+     */
+    public List<Brand> queryAllByExample(Example example);
+    /***
+     * 多条件分页查询
+     * @param brand
+     * @param page
+     * @param size
+     * @return
+     */
+    PageInfo<Brand> findPage(Brand brand, int page, int size);
 }
