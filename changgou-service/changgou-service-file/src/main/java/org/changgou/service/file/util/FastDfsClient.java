@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * 功能描述:
+ * 功能描述: FastDfs文件系统的操作
  * 项目名称:changgou-parent
  * 创建日期:2020/4/9
  *
@@ -73,7 +73,7 @@ public class FastDfsClient {
      *
      * @param groupName:组名
      * @param remoteFileName：文件存储完整名
-     * @return
+     * @return FileInfo
      */
     public static FileInfo getFile(String groupName, String remoteFileName) {
         try {
@@ -90,7 +90,7 @@ public class FastDfsClient {
      *
      * @param groupName
      * @param remoteFileName
-     * @return
+     * @return InputStream
      */
     public static InputStream downFile(String groupName, String remoteFileName) {
         try {
@@ -125,7 +125,7 @@ public class FastDfsClient {
     /***
      * 获取Storage组
      * @param groupName
-     * @return
+     * @return StorageServer[]
      * @throws IOException
      */
     public static StorageServer[] getStoreStorages(String groupName)
@@ -142,7 +142,7 @@ public class FastDfsClient {
      * 获取Storage信息,IP和端口
      * @param groupName
      * @param remoteFileName
-     * @return
+     * @return ServerInfo[]
      * @throws IOException
      */
     public static ServerInfo[] getFetchStorages(String groupName,
@@ -154,7 +154,7 @@ public class FastDfsClient {
 
     /***
      * 获取Tracker服务地址
-     * @return
+     * @return Tracker服务地址
      * @throws IOException
      */
     public static String getTrackerUrl() throws IOException {
