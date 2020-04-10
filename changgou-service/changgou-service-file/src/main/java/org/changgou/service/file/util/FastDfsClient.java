@@ -35,8 +35,9 @@ public class FastDfsClient {
 
     /***
      * 文件上传
+     *
      * @param file 上传的文件
-     * @return String[]
+     * @return String[] 返回组名和文件的存储路径
      */
     public static String[] upload(FastDfsFile file) {
         //获取文件的作者
@@ -64,15 +65,12 @@ public class FastDfsClient {
         if (uploadResults == null && storageClient != null) {
             log.error("upload file fail, error code:" + storageClient.getErrorCode());
         }
-        //获取组名
-        String groupName = uploadResults[0];
-        //获取文件存储路径
-        String remoteFileName = uploadResults[1];
         return uploadResults;
     }
 
     /***
      * 获取文件信息
+     *
      * @param groupName:组名
      * @param remoteFileName：文件存储完整名
      * @return
@@ -89,6 +87,7 @@ public class FastDfsClient {
 
     /***
      * 文件下载
+     *
      * @param groupName
      * @param remoteFileName
      * @return

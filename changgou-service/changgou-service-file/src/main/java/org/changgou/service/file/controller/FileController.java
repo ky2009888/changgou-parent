@@ -2,10 +2,7 @@ package org.changgou.service.file.controller;
 
 import org.changgou.service.file.po.FastDfsFile;
 import org.changgou.service.file.util.FastDfsClient;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,6 +16,7 @@ import java.io.IOException;
  */
 @RestController
 @CrossOrigin
+@RequestMapping("file")
 public class FileController {
     /**
      * 上传文件
@@ -26,7 +24,7 @@ public class FileController {
      * @param file 上传的文件
      * @return path 文件访问路径
      */
-    @PostMapping("/upload")
+    @PostMapping("upload")
     public String upload(@RequestParam("file") MultipartFile file) {
         String path = "";
         try {
@@ -53,15 +51,18 @@ public class FileController {
         //3. 获取文件扩展名
         String ext = "";
         if (fileName != null && !"".equals(fileName)) {
-            ext = fileName.substring(fileName.lastIndexOf("."));
+            ext = fileName.substring(fileName.lastIndexOf(".")+1);
+        } else {
+            return "";
         }
         //4. 创建文件实体类对象
         FastDfsFile fastDFSFile = new FastDfsFile(fileName, content, ext);
         //5. 上传
         String[] uploadResults = FastDfsClient.upload(fastDFSFile);
         //6. 拼接上传后的文件的完整路径和名字, uploadResults[0]为组名, uploadResults[1]为文件名称和路径
-        String path = FastDfsClient.getTrackerUrl() + uploadResults[0] + "/" + uploadResults[1];
+        StringBuilder pathBuilder = new StringBuilder(FastDfsClient.getTrackerUrl());
+        pathBuilder.append(uploadResults[0]).append("/").append(uploadResults[1]);
         //7. 返回
-        return path;
+        return pathBuilder.toString();
     }
 }
