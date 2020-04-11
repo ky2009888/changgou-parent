@@ -21,9 +21,7 @@ import java.io.InputStream;
 @Slf4j
 @Data
 public class FastDfsClient {
-    /***
-     * 初始化加载FastDFS的TrackerServer配置
-     */
+
     static {
         try {
             String filePath = new ClassPathResource("fdfs_client.conf").getFile().getAbsolutePath();
