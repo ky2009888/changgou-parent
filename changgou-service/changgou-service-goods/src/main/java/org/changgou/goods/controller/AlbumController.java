@@ -5,7 +5,6 @@ import org.changgou.goods.pojo.Album;
 import org.changgou.goods.service.AlbumService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

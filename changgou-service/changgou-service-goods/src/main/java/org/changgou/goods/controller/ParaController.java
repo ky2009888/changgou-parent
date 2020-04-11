@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.changgou.utils.Result;
 import com.changgou.utils.StatusCode;
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
