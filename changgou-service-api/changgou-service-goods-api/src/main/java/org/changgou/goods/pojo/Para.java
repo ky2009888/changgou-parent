@@ -1,5 +1,7 @@
 package org.changgou.goods.pojo;
 
+import lombok.Data;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import java.io.Serializable;
  *
  */
 @Table(name="tb_para")
+@Data
 public class Para implements Serializable {
 	/**
 	 * id
