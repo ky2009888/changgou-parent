@@ -1,110 +1,147 @@
 package org.changgou.goods.controller;
-import com.changgou.utils.PageResult;
 import com.changgou.utils.Result;
 import com.changgou.utils.StatusCode;
-import com.github.pagehelper.Page;
 import org.changgou.goods.pojo.Album;
 import org.changgou.goods.service.AlbumService;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-/**
- * @author Lenovo
- */
+
+/****
+ * @Author:shenkunlin
+ * @Description:
+ * @Date 2020/4/11 14:56
+ *****/
+@Api(value = "AlbumController")
 @RestController
-@CrossOrigin
 @RequestMapping("/album")
+@CrossOrigin
 public class AlbumController {
 
-
-    @Autowired
+    @Resource
     private AlbumService albumService;
 
-    /**
-     * 查询全部数据
+    /***
+     * Album分页条件搜索实现
+     * @param album
+     * @param page
+     * @param size
      * @return
      */
-    @GetMapping
-    public Result findAll(){
-        List<Album> albumList = albumService.findAll();
-        return new Result(true, StatusCode.OK,"查询成功",albumList) ;
+    @ApiOperation(value = "Album条件分页查询",notes = "分页条件查询Album方法详情",tags = {"AlbumController"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "page", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
+    })
+    @PostMapping(value = "/search/{page}/{size}" )
+    public Result<PageInfo> findPage(@RequestBody(required = false) @ApiParam(name = "Album对象",value = "传入JSON数据",required = false) Album album, @PathVariable  int page, @PathVariable  int size){
+        //调用AlbumService实现分页条件查询Album
+        PageInfo<Album> pageInfo = albumService.findPage(album, page, size);
+        return new Result(true, StatusCode.OK,"查询成功",pageInfo);
     }
 
     /***
-     * 根据ID查询数据
-     * @param id
+     * Album分页搜索实现
+     * @param page:当前页
+     * @param size:每页显示多少条
      * @return
      */
-    @GetMapping("/{id}")
-    public Result findById(@PathVariable Long id){
-        Album album = albumService.findById(id);
-        return new Result(true,StatusCode.OK,"查询成功",album);
+    @ApiOperation(value = "Album分页查询",notes = "分页查询Album方法详情",tags = {"AlbumController"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "page", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
+    })
+    @GetMapping(value = "/search/{page}/{size}" )
+    public Result<PageInfo> findPage(@PathVariable  int page, @PathVariable  int size){
+        //调用AlbumService实现分页查询Album
+        PageInfo<Album> pageInfo = albumService.findPage(page, size);
+        return new Result<PageInfo>(true,StatusCode.OK,"查询成功",pageInfo);
     }
 
-
     /***
-     * 新增数据
+     * 多条件搜索品牌数据
      * @param album
      * @return
      */
-    @PostMapping
-    public Result add(@RequestBody Album album){
-        albumService.add(album);
-        return new Result(true,StatusCode.OK,"添加成功");
+    @ApiOperation(value = "Album条件查询",notes = "条件查询Album方法详情",tags = {"AlbumController"})
+    @PostMapping(value = "/search" )
+    public Result<List<Album>> findList(@RequestBody(required = false) @ApiParam(name = "Album对象",value = "传入JSON数据",required = false) Album album){
+        //调用AlbumService实现条件查询Album
+        List<Album> list = albumService.findList(album);
+        return new Result<List<Album>>(true,StatusCode.OK,"查询成功",list);
     }
-
-
-    /***
-     * 修改数据
-     * @param album
-     * @param id
-     * @return
-     */
-    @PutMapping(value="/{id}")
-    public Result update(@RequestBody Album album,@PathVariable Long id){
-        album.setId(id);
-        albumService.update(album);
-        return new Result(true,StatusCode.OK,"修改成功");
-    }
-
 
     /***
      * 根据ID删除品牌数据
      * @param id
      * @return
      */
+    @ApiOperation(value = "Album根据ID删除",notes = "根据ID删除Album方法详情",tags = {"AlbumController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "Long")
     @DeleteMapping(value = "/{id}" )
     public Result delete(@PathVariable Long id){
+        //调用AlbumService实现根据主键删除
         albumService.delete(id);
         return new Result(true,StatusCode.OK,"删除成功");
     }
 
     /***
-     * 多条件搜索品牌数据
-     * @param searchMap
+     * 修改Album数据
+     * @param album
+     * @param id
      * @return
      */
-    @GetMapping(value = "/search" )
-    public Result findList(@RequestParam Map searchMap){
-        List<Album> list = albumService.findList(searchMap);
-        return new Result(true,StatusCode.OK,"查询成功",list);
+    @ApiOperation(value = "Album根据ID修改",notes = "根据ID修改Album方法详情",tags = {"AlbumController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "Long")
+    @PutMapping(value="/{id}")
+    public Result update(@RequestBody @ApiParam(name = "Album对象",value = "传入JSON数据",required = false) Album album,@PathVariable Long id){
+        //设置主键值
+        album.setId(id);
+        //调用AlbumService实现修改Album
+        albumService.update(album);
+        return new Result(true,StatusCode.OK,"修改成功");
     }
-
 
     /***
-     * 分页搜索实现
-     * @param searchMap
-     * @param page
-     * @param size
+     * 新增Album数据
+     * @param album
      * @return
      */
-    @GetMapping(value = "/search/{page}/{size}" )
-    public Result findPage(@RequestParam Map searchMap, @PathVariable  int page, @PathVariable  int size){
-        Page<Album> pageList = albumService.findPage(searchMap, page, size);
-        PageResult pageResult=new PageResult(pageList.getTotal(),pageList.getResult());
-        return new Result(true,StatusCode.OK,"查询成功",pageResult);
+    @ApiOperation(value = "Album添加",notes = "添加Album方法详情",tags = {"AlbumController"})
+    @PostMapping
+    public Result add(@RequestBody  @ApiParam(name = "Album对象",value = "传入JSON数据",required = true) Album album){
+        //调用AlbumService实现添加Album
+        albumService.add(album);
+        return new Result(true,StatusCode.OK,"添加成功");
     }
 
+    /***
+     * 根据ID查询Album数据
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "Album根据ID查询",notes = "根据ID查询Album方法详情",tags = {"AlbumController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "Long")
+    @GetMapping("/{id}")
+    public Result<Album> findById(@PathVariable Long id){
+        //调用AlbumService实现根据主键查询Album
+        Album album = albumService.findById(id);
+        return new Result<Album>(true,StatusCode.OK,"查询成功",album);
+    }
 
+    /***
+     * 查询Album全部数据
+     * @return
+     */
+    @ApiOperation(value = "查询所有Album",notes = "查询所Album有方法详情",tags = {"AlbumController"})
+    @GetMapping
+    public Result<List<Album>> findAll(){
+        //调用AlbumService实现查询所有Album
+        List<Album> list = albumService.findAll();
+        return new Result<List<Album>>(true, StatusCode.OK,"查询成功",list) ;
+    }
 }

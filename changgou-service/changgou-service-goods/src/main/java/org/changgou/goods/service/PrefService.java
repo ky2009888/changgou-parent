@@ -1,74 +1,66 @@
 package org.changgou.goods.service;
-
 import org.changgou.goods.pojo.Pref;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-/**
- * Pref表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Pref业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface PrefService {
 
     /***
-     * 查询所有
+     * Pref多条件分页查询
+     * @param pref
+     * @param page
+     * @param size
      * @return
      */
-    List<Pref> findAll();
+    PageInfo<Pref> findPage(Pref pref, int page, int size);
 
-    /**
-     * 根据ID查询
-     * @param id
+    /***
+     * Pref分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Pref findById(Integer id);
+    PageInfo<Pref> findPage(int page, int size);
 
     /***
-     * 新增
+     * Pref多条件搜索方法
      * @param pref
+     * @return
      */
-    void add(Pref pref);
+    List<Pref> findList(Pref pref);
 
     /***
-     * 修改
-     * @param pref
-     */
-    void update(Pref pref);
-
-    /***
-     * 删除
+     * 删除Pref
      * @param id
      */
     void delete(Integer id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Pref数据
+     * @param pref
      */
-    List<Pref> findList(Map<String, Object> searchMap);
+    void update(Pref pref);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Pref
+     * @param pref
+     */
+    void add(Pref pref);
+
+    /**
+     * 根据ID查询Pref
+     * @param id
      * @return
      */
-    Page<Pref> findPage(int page, int size);
+     Pref findById(Integer id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Pref
      * @return
      */
-    Page<Pref> findPage(Map<String, Object> searchMap, int page, int size);
-
-
-
-
+    List<Pref> findAll();
 }

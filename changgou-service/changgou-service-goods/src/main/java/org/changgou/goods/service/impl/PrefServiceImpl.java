@@ -1,65 +1,114 @@
 package org.changgou.goods.service.impl;
-
 import org.changgou.goods.dao.PrefMapper;
-import org.changgou.goods.service.PrefService;
 import org.changgou.goods.pojo.Pref;
-import com.github.pagehelper.Page;
+import org.changgou.goods.service.PrefService;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
-
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-
-/**
- * @author Lenovo
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Pref业务层接口实现类
+ * @Date 2019/6/14 0:16
+ *****/
 @Service
 public class PrefServiceImpl implements PrefService {
-    /**
-     * 定义Pref数据库表接口的句柄
-     */
-    @Resource
+
+    @Autowired
     private PrefMapper prefMapper;
 
+
     /**
-     * 查询全部列表
+     * Pref条件+分页查询
+     * @param pref 查询条件
+     * @param page 页码
+     * @param size 页大小
+     * @return 分页结果
+     */
+    @Override
+    public PageInfo<Pref> findPage(Pref pref, int page, int size){
+        //分页
+        PageHelper.startPage(page,size);
+        //搜索条件构建
+        Example example = createExample(pref);
+        //执行搜索
+        return new PageInfo<Pref>(prefMapper.selectByExample(example));
+    }
+
+    /**
+     * Pref分页查询
+     * @param page
+     * @param size
      * @return
      */
     @Override
-    public List<Pref> findAll() {
-        return prefMapper.selectAll();
+    public PageInfo<Pref> findPage(int page, int size){
+        //静态分页
+        PageHelper.startPage(page,size);
+        //分页查询
+        return new PageInfo<Pref>(prefMapper.selectAll());
     }
 
     /**
-     * 根据ID查询
-     * @param id
+     * Pref条件查询
+     * @param pref
      * @return
      */
     @Override
-    public Pref findById(Integer id){
-        return  prefMapper.selectByPrimaryKey(id);
+    public List<Pref> findList(Pref pref){
+        //构建查询条件
+        Example example = createExample(pref);
+        //根据构建的条件查询数据
+        return prefMapper.selectByExample(example);
     }
 
 
     /**
-     * 增加
+     * Pref构建查询对象
      * @param pref
+     * @return
      */
-    @Override
-    public void add(Pref pref){
-        prefMapper.insert(pref);
-    }
-
-
-    /**
-     * 修改
-     * @param pref
-     */
-    @Override
-    public void update(Pref pref){
-        prefMapper.updateByPrimaryKey(pref);
+    public Example createExample(Pref pref){
+        Example example=new Example(Pref.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(pref!=null){
+            // ID
+            if(!StringUtils.isEmpty(pref.getId())){
+                    criteria.andEqualTo("id",pref.getId());
+            }
+            // 分类ID
+            if(!StringUtils.isEmpty(pref.getCateId())){
+                    criteria.andEqualTo("cateId",pref.getCateId());
+            }
+            // 消费金额
+            if(!StringUtils.isEmpty(pref.getBuyMoney())){
+                    criteria.andEqualTo("buyMoney",pref.getBuyMoney());
+            }
+            // 优惠金额
+            if(!StringUtils.isEmpty(pref.getPreMoney())){
+                    criteria.andEqualTo("preMoney",pref.getPreMoney());
+            }
+            // 活动开始日期
+            if(!StringUtils.isEmpty(pref.getStartTime())){
+                    criteria.andEqualTo("startTime",pref.getStartTime());
+            }
+            // 活动截至日期
+            if(!StringUtils.isEmpty(pref.getEndTime())){
+                    criteria.andEqualTo("endTime",pref.getEndTime());
+            }
+            // 类型
+            if(!StringUtils.isEmpty(pref.getType())){
+                    criteria.andEqualTo("type",pref.getType());
+            }
+            // 状态
+            if(!StringUtils.isEmpty(pref.getState())){
+                    criteria.andEqualTo("state",pref.getState());
+            }
+        }
+        return example;
     }
 
     /**
@@ -71,81 +120,40 @@ public class PrefServiceImpl implements PrefService {
         prefMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 修改Pref
+     * @param pref
+     */
+    @Override
+    public void update(Pref pref){
+        prefMapper.updateByPrimaryKey(pref);
+    }
 
     /**
-     * 条件查询
-     * @param searchMap
+     * 增加Pref
+     * @param pref
+     */
+    @Override
+    public void add(Pref pref){
+        prefMapper.insert(pref);
+    }
+
+    /**
+     * 根据ID查询Pref
+     * @param id
      * @return
      */
     @Override
-    public List<Pref> findList(Map<String, Object> searchMap){
-        Example example = createExample(searchMap);
-        return prefMapper.selectByExample(example);
+    public Pref findById(Integer id){
+        return  prefMapper.selectByPrimaryKey(id);
     }
 
     /**
-     * 分页查询
-     * @param page
-     * @param size
+     * 查询Pref全部数据
      * @return
      */
     @Override
-    public Page<Pref> findPage(int page, int size){
-        PageHelper.startPage(page,size);
-        return (Page<Pref>)prefMapper.selectAll();
+    public List<Pref> findAll() {
+        return prefMapper.selectAll();
     }
-
-    /**
-     * 条件+分页查询
-     * @param searchMap 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public Page<Pref> findPage(Map<String,Object> searchMap, int page, int size){
-        PageHelper.startPage(page,size);
-        Example example = createExample(searchMap);
-        return (Page<Pref>)prefMapper.selectByExample(example);
-    }
-
-    /**
-     * 构建查询对象
-     * @param searchMap
-     * @return
-     */
-    private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(Pref.class);
-        Example.Criteria criteria = example.createCriteria();
-        if(searchMap!=null){
-            // 类型
-            if(searchMap.get("type")!=null && !"".equals(searchMap.get("type"))){
-                criteria.andLike("type","%"+searchMap.get("type")+"%");
-           	}
-            // 状态
-            if(searchMap.get("state")!=null && !"".equals(searchMap.get("state"))){
-                criteria.andLike("state","%"+searchMap.get("state")+"%");
-           	}
-
-            // ID
-            if(searchMap.get("id")!=null ){
-                criteria.andEqualTo("id",searchMap.get("id"));
-            }
-            // 分类ID
-            if(searchMap.get("cateId")!=null ){
-                criteria.andEqualTo("cateId",searchMap.get("cateId"));
-            }
-            // 消费金额
-            if(searchMap.get("buyMoney")!=null ){
-                criteria.andEqualTo("buyMoney",searchMap.get("buyMoney"));
-            }
-            // 优惠金额
-            if(searchMap.get("preMoney")!=null ){
-                criteria.andEqualTo("preMoney",searchMap.get("preMoney"));
-            }
-
-        }
-        return example;
-    }
-
 }

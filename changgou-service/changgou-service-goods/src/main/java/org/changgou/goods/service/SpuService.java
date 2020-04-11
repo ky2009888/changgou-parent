@@ -1,89 +1,66 @@
 package org.changgou.goods.service;
-
-import org.changgou.goods.pojo.Goods;
 import org.changgou.goods.pojo.Spu;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-/**
- * Spu表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Spu业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface SpuService {
 
     /***
-     * 查询所有
+     * Spu多条件分页查询
+     * @param spu
+     * @param page
+     * @param size
      * @return
      */
-    List<Spu> findAll();
+    PageInfo<Spu> findPage(Spu spu, int page, int size);
 
-    /**
-     * 根据ID查询
-     * @param id
+    /***
+     * Spu分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Spu findById(String id);
+    PageInfo<Spu> findPage(int page, int size);
 
     /***
-     * 新增
-     * @param goods
+     * Spu多条件搜索方法
+     * @param spu
+     * @return
      */
-    void add(Goods goods);
+    List<Spu> findList(Spu spu);
 
     /***
-     * 修改
-     * @param goods
-     */
-    void update(Goods goods);
-
-    /***
-     * 删除
+     * 删除Spu
      * @param id
      */
     void delete(String id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Spu数据
+     * @param spu
      */
-    List<Spu> findList(Map<String, Object> searchMap);
+    void update(Spu spu);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Spu
+     * @param spu
+     */
+    void add(Spu spu);
+
+    /**
+     * 根据ID查询Spu
+     * @param id
      * @return
      */
-    Page<Spu> findPage(int page, int size);
+     Spu findById(String id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Spu
      * @return
      */
-    Page<Spu> findPage(Map<String, Object> searchMap, int page, int size);
-
-    Goods findGoodsById(String id);
-
-    //商品审核并自动上架
-    void audit(String id);
-
-    //商品下架
-    void pull(String id);
-
-    //商品上架
-    void put(String id);
-
-    //还原商品
-    void restore(String id);
-
-    //物理删除商品
-    void realDel(String id);
-
+    List<Spu> findAll();
 }

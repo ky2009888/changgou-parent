@@ -1,74 +1,66 @@
 package org.changgou.goods.service;
-
 import org.changgou.goods.pojo.Template;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-/**
- * 模板表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Template业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface TemplateService {
 
     /***
-     * 查询所有
+     * Template多条件分页查询
+     * @param template
+     * @param page
+     * @param size
      * @return
      */
-    List<Template> findAll();
+    PageInfo<Template> findPage(Template template, int page, int size);
 
-    /**
-     * 根据ID查询
-     * @param id
+    /***
+     * Template分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Template findById(Integer id);
+    PageInfo<Template> findPage(int page, int size);
 
     /***
-     * 新增
+     * Template多条件搜索方法
      * @param template
+     * @return
      */
-    void add(Template template);
+    List<Template> findList(Template template);
 
     /***
-     * 修改
-     * @param template
-     */
-    void update(Template template);
-
-    /***
-     * 删除
+     * 删除Template
      * @param id
      */
     void delete(Integer id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Template数据
+     * @param template
      */
-    List<Template> findList(Map<String, Object> searchMap);
+    void update(Template template);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Template
+     * @param template
+     */
+    void add(Template template);
+
+    /**
+     * 根据ID查询Template
+     * @param id
      * @return
      */
-    Page<Template> findPage(int page, int size);
+     Template findById(Integer id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Template
      * @return
      */
-    Page<Template> findPage(Map<String, Object> searchMap, int page, int size);
-
-
-
-
+    List<Template> findAll();
 }

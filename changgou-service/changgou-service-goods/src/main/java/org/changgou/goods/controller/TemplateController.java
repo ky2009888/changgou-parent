@@ -1,116 +1,147 @@
 package org.changgou.goods.controller;
-
-import com.changgou.utils.PageResult;
-import com.changgou.utils.Result;
-import com.changgou.utils.StatusCode;
-import com.github.pagehelper.Page;
 import org.changgou.goods.pojo.Template;
 import org.changgou.goods.service.TemplateService;
+import com.github.pagehelper.PageInfo;
+import com.changgou.utils.Result;
+import com.changgou.utils.StatusCode;
+import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
-/**
- * @author Lenovo
- */
+/****
+ * @Author:shenkunlin
+ * @Description:
+ * @Date 2020/4/11 14:56
+ *****/
+@Api(value = "TemplateController")
 @RestController
-@CrossOrigin
 @RequestMapping("/template")
+@CrossOrigin
 public class TemplateController {
 
-    /**
-     * 定义Template类的句柄
-     */
     @Resource
     private TemplateService templateService;
 
-    /**
-     * 查询全部数据
-     *
+    /***
+     * Template分页条件搜索实现
+     * @param template
+     * @param page
+     * @param size
      * @return
      */
-    @GetMapping
-    public Result findAll() {
-        List<Template> templateList = templateService.findAll();
-        return new Result(true, StatusCode.OK, "查询成功", templateList);
+    @ApiOperation(value = "Template条件分页查询",notes = "分页条件查询Template方法详情",tags = {"TemplateController"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "page", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
+    })
+    @PostMapping(value = "/search/{page}/{size}" )
+    public Result<PageInfo> findPage(@RequestBody(required = false) @ApiParam(name = "Template对象",value = "传入JSON数据",required = false) Template template, @PathVariable  int page, @PathVariable  int size){
+        //调用TemplateService实现分页条件查询Template
+        PageInfo<Template> pageInfo = templateService.findPage(template, page, size);
+        return new Result(true,StatusCode.OK,"查询成功",pageInfo);
     }
 
     /***
-     * 根据ID查询数据
-     * @param id
+     * Template分页搜索实现
+     * @param page:当前页
+     * @param size:每页显示多少条
      * @return
      */
-    @GetMapping("/{id}")
-    public Result findById(@PathVariable Integer id) {
-        Template template = templateService.findById(id);
-        return new Result(true, StatusCode.OK, "查询成功", template);
+    @ApiOperation(value = "Template分页查询",notes = "分页查询Template方法详情",tags = {"TemplateController"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "page", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
+    })
+    @GetMapping(value = "/search/{page}/{size}" )
+    public Result<PageInfo> findPage(@PathVariable  int page, @PathVariable  int size){
+        //调用TemplateService实现分页查询Template
+        PageInfo<Template> pageInfo = templateService.findPage(page, size);
+        return new Result<PageInfo>(true,StatusCode.OK,"查询成功",pageInfo);
     }
 
-
     /***
-     * 新增数据
+     * 多条件搜索品牌数据
      * @param template
      * @return
      */
-    @PostMapping
-    public Result add(@RequestBody Template template) {
-        templateService.add(template);
-        return new Result(true, StatusCode.OK, "添加成功");
+    @ApiOperation(value = "Template条件查询",notes = "条件查询Template方法详情",tags = {"TemplateController"})
+    @PostMapping(value = "/search" )
+    public Result<List<Template>> findList(@RequestBody(required = false) @ApiParam(name = "Template对象",value = "传入JSON数据",required = false) Template template){
+        //调用TemplateService实现条件查询Template
+        List<Template> list = templateService.findList(template);
+        return new Result<List<Template>>(true,StatusCode.OK,"查询成功",list);
     }
-
-
-    /***
-     * 修改数据
-     * @param template
-     * @param id
-     * @return
-     */
-    @PutMapping(value = "/{id}")
-    public Result update(@RequestBody Template template, @PathVariable Integer id) {
-        template.setId(id);
-        templateService.update(template);
-        return new Result(true, StatusCode.OK, "修改成功");
-    }
-
 
     /***
      * 根据ID删除品牌数据
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
-    public Result delete(@PathVariable Integer id) {
+    @ApiOperation(value = "Template根据ID删除",notes = "根据ID删除Template方法详情",tags = {"TemplateController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "Integer")
+    @DeleteMapping(value = "/{id}" )
+    public Result delete(@PathVariable Integer id){
+        //调用TemplateService实现根据主键删除
         templateService.delete(id);
-        return new Result(true, StatusCode.OK, "删除成功");
+        return new Result(true,StatusCode.OK,"删除成功");
     }
 
     /***
-     * 多条件搜索品牌数据
-     * @param searchMap
+     * 修改Template数据
+     * @param template
+     * @param id
      * @return
      */
-    @GetMapping(value = "/search")
-    public Result findList(@RequestParam Map searchMap) {
-        List<Template> list = templateService.findList(searchMap);
-        return new Result(true, StatusCode.OK, "查询成功", list);
+    @ApiOperation(value = "Template根据ID修改",notes = "根据ID修改Template方法详情",tags = {"TemplateController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "Integer")
+    @PutMapping(value="/{id}")
+    public Result update(@RequestBody @ApiParam(name = "Template对象",value = "传入JSON数据",required = false) Template template,@PathVariable Integer id){
+        //设置主键值
+        template.setId(id);
+        //调用TemplateService实现修改Template
+        templateService.update(template);
+        return new Result(true,StatusCode.OK,"修改成功");
     }
-
 
     /***
-     * 分页搜索实现
-     * @param searchMap
-     * @param page
-     * @param size
+     * 新增Template数据
+     * @param template
      * @return
      */
-    @GetMapping(value = "/search/{page}/{size}")
-    public Result findPage(@RequestParam Map searchMap, @PathVariable int page, @PathVariable int size) {
-        Page<Template> pageList = templateService.findPage(searchMap, page, size);
-        PageResult pageResult = new PageResult(pageList.getTotal(), pageList.getResult());
-        return new Result(true, StatusCode.OK, "查询成功", pageResult);
+    @ApiOperation(value = "Template添加",notes = "添加Template方法详情",tags = {"TemplateController"})
+    @PostMapping
+    public Result add(@RequestBody  @ApiParam(name = "Template对象",value = "传入JSON数据",required = true) Template template){
+        //调用TemplateService实现添加Template
+        templateService.add(template);
+        return new Result(true,StatusCode.OK,"添加成功");
     }
 
+    /***
+     * 根据ID查询Template数据
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "Template根据ID查询",notes = "根据ID查询Template方法详情",tags = {"TemplateController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "Integer")
+    @GetMapping("/{id}")
+    public Result<Template> findById(@PathVariable Integer id){
+        //调用TemplateService实现根据主键查询Template
+        Template template = templateService.findById(id);
+        return new Result<Template>(true,StatusCode.OK,"查询成功",template);
+    }
 
+    /***
+     * 查询Template全部数据
+     * @return
+     */
+    @ApiOperation(value = "查询所有Template",notes = "查询所Template有方法详情",tags = {"TemplateController"})
+    @GetMapping
+    public Result<List<Template>> findAll(){
+        //调用TemplateService实现查询所有Template
+        List<Template> list = templateService.findAll();
+        return new Result<List<Template>>(true, StatusCode.OK,"查询成功",list) ;
+    }
 }

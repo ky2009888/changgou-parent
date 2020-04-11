@@ -1,74 +1,66 @@
 package org.changgou.goods.service;
-
 import org.changgou.goods.pojo.Spec;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-/**
- * 规格表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Spec业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface SpecService {
 
     /***
-     * 查询所有
+     * Spec多条件分页查询
+     * @param spec
+     * @param page
+     * @param size
      * @return
      */
-    List<Spec> findAll();
+    PageInfo<Spec> findPage(Spec spec, int page, int size);
 
-    /**
-     * 根据ID查询
-     * @param id
+    /***
+     * Spec分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Spec findById(Integer id);
+    PageInfo<Spec> findPage(int page, int size);
 
     /***
-     * 新增
+     * Spec多条件搜索方法
      * @param spec
+     * @return
      */
-    void add(Spec spec);
+    List<Spec> findList(Spec spec);
 
     /***
-     * 修改
-     * @param spec
-     */
-    void update(Spec spec);
-
-    /***
-     * 删除
+     * 删除Spec
      * @param id
      */
     void delete(Integer id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Spec数据
+     * @param spec
      */
-    List<Spec> findList(Map<String, Object> searchMap);
+    void update(Spec spec);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Spec
+     * @param spec
+     */
+    void add(Spec spec);
+
+    /**
+     * 根据ID查询Spec
+     * @param id
      * @return
      */
-    Page<Spec> findPage(int page, int size);
+     Spec findById(Integer id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Spec
      * @return
      */
-    Page<Spec> findPage(Map<String, Object> searchMap, int page, int size);
-
-    List<Map> findSpecListByCategoryName(String categoryName);
-
-
+    List<Spec> findAll();
 }

@@ -1,67 +1,98 @@
 package org.changgou.goods.service.impl;
-
 import org.changgou.goods.dao.AlbumMapper;
-import org.changgou.goods.service.AlbumService;
 import org.changgou.goods.pojo.Album;
-import com.github.pagehelper.Page;
+import org.changgou.goods.service.AlbumService;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
-
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-/**
- * Album表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Album业务层接口实现类
+ * @Date 2019/6/14 0:16
+ *****/
 @Service
 public class AlbumServiceImpl implements AlbumService {
-    /**
-     * 定义Album数据库表接口的句柄
-     */
-    @Resource
+
+    @Autowired
     private AlbumMapper albumMapper;
 
+
     /**
-     * 查询全部列表
+     * Album条件+分页查询
+     * @param album 查询条件
+     * @param page 页码
+     * @param size 页大小
+     * @return 分页结果
+     */
+    @Override
+    public PageInfo<Album> findPage(Album album, int page, int size){
+        //分页
+        PageHelper.startPage(page,size);
+        //搜索条件构建
+        Example example = createExample(album);
+        //执行搜索
+        return new PageInfo<Album>(albumMapper.selectByExample(example));
+    }
+
+    /**
+     * Album分页查询
+     * @param page
+     * @param size
      * @return
      */
     @Override
-    public List<Album> findAll() {
-        return albumMapper.selectAll();
+    public PageInfo<Album> findPage(int page, int size){
+        //静态分页
+        PageHelper.startPage(page,size);
+        //分页查询
+        return new PageInfo<Album>(albumMapper.selectAll());
     }
 
     /**
-     * 根据ID查询
-     * @param id
+     * Album条件查询
+     * @param album
      * @return
      */
     @Override
-    public Album findById(Long id){
-        return  albumMapper.selectByPrimaryKey(id);
+    public List<Album> findList(Album album){
+        //构建查询条件
+        Example example = createExample(album);
+        //根据构建的条件查询数据
+        return albumMapper.selectByExample(example);
     }
 
 
     /**
-     * 增加
+     * Album构建查询对象
      * @param album
+     * @return
      */
-    @Override
-    public void add(Album album){
-        albumMapper.insert(album);
-    }
-
-
-    /**
-     * 修改
-     * @param album
-     */
-    @Override
-    public void update(Album album){
-        albumMapper.updateByPrimaryKey(album);
+    public Example createExample(Album album){
+        Example example=new Example(Album.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(album!=null){
+            // 编号
+            if(!StringUtils.isEmpty(album.getId())){
+                    criteria.andEqualTo("id",album.getId());
+            }
+            // 相册名称
+            if(!StringUtils.isEmpty(album.getTitle())){
+                    criteria.andLike("title","%"+album.getTitle()+"%");
+            }
+            // 相册封面
+            if(!StringUtils.isEmpty(album.getImage())){
+                    criteria.andEqualTo("image",album.getImage());
+            }
+            // 图片列表
+            if(!StringUtils.isEmpty(album.getImageItems())){
+                    criteria.andEqualTo("imageItems",album.getImageItems());
+            }
+        }
+        return example;
     }
 
     /**
@@ -73,69 +104,40 @@ public class AlbumServiceImpl implements AlbumService {
         albumMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 修改Album
+     * @param album
+     */
+    @Override
+    public void update(Album album){
+        albumMapper.updateByPrimaryKey(album);
+    }
 
     /**
-     * 条件查询
-     * @param searchMap
+     * 增加Album
+     * @param album
+     */
+    @Override
+    public void add(Album album){
+        albumMapper.insert(album);
+    }
+
+    /**
+     * 根据ID查询Album
+     * @param id
      * @return
      */
     @Override
-    public List<Album> findList(Map<String, Object> searchMap){
-        Example example = createExample(searchMap);
-        return albumMapper.selectByExample(example);
+    public Album findById(Long id){
+        return  albumMapper.selectByPrimaryKey(id);
     }
 
     /**
-     * 分页查询
-     * @param page
-     * @param size
+     * 查询Album全部数据
      * @return
      */
     @Override
-    public Page<Album> findPage(int page, int size){
-        PageHelper.startPage(page,size);
-        return (Page<Album>)albumMapper.selectAll();
+    public List<Album> findAll() {
+        return albumMapper.selectAll();
     }
-
-    /**
-     * 条件+分页查询
-     * @param searchMap 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public Page<Album> findPage(Map<String,Object> searchMap, int page, int size){
-        PageHelper.startPage(page,size);
-        Example example = createExample(searchMap);
-        return (Page<Album>)albumMapper.selectByExample(example);
-    }
-
-    /**
-     * 构建查询对象
-     * @param searchMap
-     * @return
-     */
-    private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(Album.class);
-        Example.Criteria criteria = example.createCriteria();
-        if(searchMap!=null){
-            // 相册名称
-            if(searchMap.get("title")!=null && !"".equals(searchMap.get("title"))){
-                criteria.andLike("title","%"+searchMap.get("title")+"%");
-           	}
-            // 相册封面
-            if(searchMap.get("image")!=null && !"".equals(searchMap.get("image"))){
-                criteria.andLike("image","%"+searchMap.get("image")+"%");
-           	}
-            // 图片列表
-            if(searchMap.get("image_items")!=null && !"".equals(searchMap.get("image_items"))){
-                criteria.andLike("image_items","%"+searchMap.get("image_items")+"%");
-           	}
-
-
-        }
-        return example;
-    }
-
 }

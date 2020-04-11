@@ -1,74 +1,66 @@
 package org.changgou.goods.service;
-
 import org.changgou.goods.pojo.Category;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-/**
- * Category表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Category业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface CategoryService {
 
     /***
-     * 查询所有
+     * Category多条件分页查询
+     * @param category
+     * @param page
+     * @param size
      * @return
      */
-    List<Category> findAll();
+    PageInfo<Category> findPage(Category category, int page, int size);
 
-    /**
-     * 根据ID查询
-     * @param id
+    /***
+     * Category分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Category findById(Integer id);
+    PageInfo<Category> findPage(int page, int size);
 
     /***
-     * 新增
+     * Category多条件搜索方法
      * @param category
+     * @return
      */
-    void add(Category category);
+    List<Category> findList(Category category);
 
     /***
-     * 修改
-     * @param category
-     */
-    void update(Category category);
-
-    /***
-     * 删除
+     * 删除Category
      * @param id
      */
     void delete(Integer id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Category数据
+     * @param category
      */
-    List<Category> findList(Map<String, Object> searchMap);
+    void update(Category category);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Category
+     * @param category
+     */
+    void add(Category category);
+
+    /**
+     * 根据ID查询Category
+     * @param id
      * @return
      */
-    Page<Category> findPage(int page, int size);
+     Category findById(Integer id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Category
      * @return
      */
-    Page<Category> findPage(Map<String, Object> searchMap, int page, int size);
-
-
-
-
+    List<Category> findAll();
 }

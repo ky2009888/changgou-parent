@@ -1,150 +1,147 @@
 package org.changgou.goods.controller;
-
-import com.changgou.utils.PageResult;
-import com.changgou.utils.Result;
-import com.changgou.utils.StatusCode;
-import com.github.pagehelper.Page;
-import org.changgou.goods.pojo.Goods;
 import org.changgou.goods.pojo.Spu;
 import org.changgou.goods.service.SpuService;
+import com.github.pagehelper.PageInfo;
+import com.changgou.utils.Result;
+import com.changgou.utils.StatusCode;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
+/****
+ * @Author:shenkunlin
+ * @Description:
+ * @Date 2020/4/11 14:56
+ *****/
+@Api(value = "SpuController")
 @RestController
-@CrossOrigin
 @RequestMapping("/spu")
+@CrossOrigin
 public class SpuController {
 
-    /**
-     * 定义Spu服务类的句柄
-     */
     @Resource
     private SpuService spuService;
 
-    /**
-     * 查询全部数据
-     *
+    /***
+     * Spu分页条件搜索实现
+     * @param spu
+     * @param page
+     * @param size
      * @return
      */
-    @GetMapping
-    public Result findAll() {
-        List<Spu> spuList = spuService.findAll();
-        return new Result(true, StatusCode.OK, "查询成功", spuList);
+    @ApiOperation(value = "Spu条件分页查询",notes = "分页条件查询Spu方法详情",tags = {"SpuController"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "page", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
+    })
+    @PostMapping(value = "/search/{page}/{size}" )
+    public Result<PageInfo> findPage(@RequestBody(required = false) @ApiParam(name = "Spu对象",value = "传入JSON数据",required = false) Spu spu, @PathVariable  int page, @PathVariable  int size){
+        //调用SpuService实现分页条件查询Spu
+        PageInfo<Spu> pageInfo = spuService.findPage(spu, page, size);
+        return new Result(true,StatusCode.OK,"查询成功",pageInfo);
     }
 
     /***
-     * 根据ID查询数据
-     * @param id
+     * Spu分页搜索实现
+     * @param page:当前页
+     * @param size:每页显示多少条
      * @return
      */
-    @GetMapping("/{id}")
-    public Result findById(@PathVariable("id") String id) {
-        Goods goods = spuService.findGoodsById(id);
-        return new Result(true, StatusCode.OK, "查询成功", goods);
+    @ApiOperation(value = "Spu分页查询",notes = "分页查询Spu方法详情",tags = {"SpuController"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "page", value = "当前页", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
+    })
+    @GetMapping(value = "/search/{page}/{size}" )
+    public Result<PageInfo> findPage(@PathVariable  int page, @PathVariable  int size){
+        //调用SpuService实现分页查询Spu
+        PageInfo<Spu> pageInfo = spuService.findPage(page, size);
+        return new Result<PageInfo>(true,StatusCode.OK,"查询成功",pageInfo);
     }
-
-    @GetMapping("/findSpuById/{id}")
-    public Result<Spu> findSpuById(@PathVariable("id") String id) {
-        Spu spu = spuService.findById(id);
-        return new Result(true, StatusCode.OK, "查询成功", spu);
-    }
-
 
     /***
-     * 新增数据
-     * @param goods
+     * 多条件搜索品牌数据
+     * @param spu
      * @return
      */
-    @PostMapping
-    public Result add(@RequestBody Goods goods) {
-        spuService.add(goods);
-        return new Result(true, StatusCode.OK, "添加成功");
+    @ApiOperation(value = "Spu条件查询",notes = "条件查询Spu方法详情",tags = {"SpuController"})
+    @PostMapping(value = "/search" )
+    public Result<List<Spu>> findList(@RequestBody(required = false) @ApiParam(name = "Spu对象",value = "传入JSON数据",required = false) Spu spu){
+        //调用SpuService实现条件查询Spu
+        List<Spu> list = spuService.findList(spu);
+        return new Result<List<Spu>>(true,StatusCode.OK,"查询成功",list);
     }
-
-
-    /***
-     * 修改数据
-     * @param goods
-     * @param id
-     * @return
-     */
-    @PutMapping(value = "/{id}")
-    public Result update(@RequestBody Goods goods, @PathVariable String id) {
-        spuService.update(goods);
-        return new Result(true, StatusCode.OK, "修改成功");
-    }
-
 
     /***
      * 根据ID删除品牌数据
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
-    public Result delete(@PathVariable String id) {
+    @ApiOperation(value = "Spu根据ID删除",notes = "根据ID删除Spu方法详情",tags = {"SpuController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "String")
+    @DeleteMapping(value = "/{id}" )
+    public Result delete(@PathVariable String id){
+        //调用SpuService实现根据主键删除
         spuService.delete(id);
-        return new Result(true, StatusCode.OK, "删除成功");
+        return new Result(true,StatusCode.OK,"删除成功");
     }
 
     /***
-     * 多条件搜索品牌数据
-     * @param searchMap
+     * 修改Spu数据
+     * @param spu
+     * @param id
      * @return
      */
-    @GetMapping(value = "/search")
-    public Result findList(@RequestParam Map searchMap) {
-        List<Spu> list = spuService.findList(searchMap);
-        return new Result(true, StatusCode.OK, "查询成功", list);
+    @ApiOperation(value = "Spu根据ID修改",notes = "根据ID修改Spu方法详情",tags = {"SpuController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "String")
+    @PutMapping(value="/{id}")
+    public Result update(@RequestBody @ApiParam(name = "Spu对象",value = "传入JSON数据",required = false) Spu spu,@PathVariable String id){
+        //设置主键值
+        spu.setId(id);
+        //调用SpuService实现修改Spu
+        spuService.update(spu);
+        return new Result(true,StatusCode.OK,"修改成功");
     }
-
 
     /***
-     * 分页搜索实现
-     * @param searchMap
-     * @param page
-     * @param size
+     * 新增Spu数据
+     * @param spu
      * @return
      */
-    @GetMapping(value = "/search/{page}/{size}")
-    public Result findPage(@RequestParam Map searchMap, @PathVariable int page, @PathVariable int size) {
-        Page<Spu> pageList = spuService.findPage(searchMap, page, size);
-        PageResult pageResult = new PageResult(pageList.getTotal(), pageList.getResult());
-        return new Result(true, StatusCode.OK, "查询成功", pageResult);
+    @ApiOperation(value = "Spu添加",notes = "添加Spu方法详情",tags = {"SpuController"})
+    @PostMapping
+    public Result add(@RequestBody  @ApiParam(name = "Spu对象",value = "传入JSON数据",required = true) Spu spu){
+        //调用SpuService实现添加Spu
+        spuService.add(spu);
+        return new Result(true,StatusCode.OK,"添加成功");
     }
 
-    @PutMapping("/audit/{id}")
-    public Result audit(@PathVariable("id") String id) {
-        spuService.audit(id);
-        return new Result(true, StatusCode.OK, "商品审核成功");
+    /***
+     * 根据ID查询Spu数据
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "Spu根据ID查询",notes = "根据ID查询Spu方法详情",tags = {"SpuController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "String")
+    @GetMapping("/{id}")
+    public Result<Spu> findById(@PathVariable String id){
+        //调用SpuService实现根据主键查询Spu
+        Spu spu = spuService.findById(id);
+        return new Result<Spu>(true,StatusCode.OK,"查询成功",spu);
     }
 
-    @PutMapping("/pull/{id}")
-    public Result pull(@PathVariable("id") String id) {
-        spuService.pull(id);
-        return new Result(true, StatusCode.OK, "商品下架成功");
+    /***
+     * 查询Spu全部数据
+     * @return
+     */
+    @ApiOperation(value = "查询所有Spu",notes = "查询所Spu有方法详情",tags = {"SpuController"})
+    @GetMapping
+    public Result<List<Spu>> findAll(){
+        //调用SpuService实现查询所有Spu
+        List<Spu> list = spuService.findAll();
+        return new Result<List<Spu>>(true, StatusCode.OK,"查询成功",list) ;
     }
-
-    @PutMapping("/put/{id}")
-    public Result put(@PathVariable("id") String id) {
-        spuService.put(id);
-        return new Result(true, StatusCode.OK, "商品上架成功");
-    }
-
-    @PutMapping("/restore/{id}")
-    public Result restore(@PathVariable("id") String id) {
-        spuService.restore(id);
-        return new Result(true, StatusCode.OK, "商品还原成功");
-    }
-
-    @DeleteMapping("/realDel/{id}")
-    public Result realDel(@PathVariable("id") String id) {
-        spuService.realDel(id);
-        return new Result(true, StatusCode.OK, "商品删除成功");
-    }
-
-
 }

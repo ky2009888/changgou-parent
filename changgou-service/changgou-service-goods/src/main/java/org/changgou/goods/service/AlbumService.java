@@ -1,74 +1,66 @@
 package org.changgou.goods.service;
-
 import org.changgou.goods.pojo.Album;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-
-/**
- * Album表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Album业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface AlbumService {
 
     /***
-     * 查询所有
+     * Album多条件分页查询
+     * @param album
+     * @param page
+     * @param size
      * @return
      */
-    List<Album> findAll();
+    PageInfo<Album> findPage(Album album, int page, int size);
 
-    /**
-     * 根据ID查询
-     *
-     * @param id
+    /***
+     * Album分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Album findById(Long id);
+    PageInfo<Album> findPage(int page, int size);
 
     /***
-     * 新增
+     * Album多条件搜索方法
      * @param album
+     * @return
      */
-    void add(Album album);
+    List<Album> findList(Album album);
 
     /***
-     * 修改
-     * @param album
-     */
-    void update(Album album);
-
-    /***
-     * 删除
+     * 删除Album
      * @param id
      */
     void delete(Long id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Album数据
+     * @param album
      */
-    List<Album> findList(Map<String, Object> searchMap);
+    void update(Album album);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Album
+     * @param album
+     */
+    void add(Album album);
+
+    /**
+     * 根据ID查询Album
+     * @param id
      * @return
      */
-    Page<Album> findPage(int page, int size);
+     Album findById(Long id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Album
      * @return
      */
-    Page<Album> findPage(Map<String, Object> searchMap, int page, int size);
-
-
+    List<Album> findAll();
 }

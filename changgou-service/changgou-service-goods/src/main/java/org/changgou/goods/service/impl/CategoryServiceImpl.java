@@ -1,62 +1,114 @@
 package org.changgou.goods.service.impl;
-
 import org.changgou.goods.dao.CategoryMapper;
-import org.changgou.goods.service.CategoryService;
 import org.changgou.goods.pojo.Category;
-import com.github.pagehelper.Page;
+import org.changgou.goods.service.CategoryService;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
-
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-
+/****
+ * @Author:shenkunlin
+ * @Description:Category业务层接口实现类
+ * @Date 2019/6/14 0:16
+ *****/
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    /**
-     * 定义Category数据库表接口的句柄
-     */
-    @Resource
+
+    @Autowired
     private CategoryMapper categoryMapper;
 
+
     /**
-     * 查询全部列表
+     * Category条件+分页查询
+     * @param category 查询条件
+     * @param page 页码
+     * @param size 页大小
+     * @return 分页结果
+     */
+    @Override
+    public PageInfo<Category> findPage(Category category, int page, int size){
+        //分页
+        PageHelper.startPage(page,size);
+        //搜索条件构建
+        Example example = createExample(category);
+        //执行搜索
+        return new PageInfo<Category>(categoryMapper.selectByExample(example));
+    }
+
+    /**
+     * Category分页查询
+     * @param page
+     * @param size
      * @return
      */
     @Override
-    public List<Category> findAll() {
-        return categoryMapper.selectAll();
+    public PageInfo<Category> findPage(int page, int size){
+        //静态分页
+        PageHelper.startPage(page,size);
+        //分页查询
+        return new PageInfo<Category>(categoryMapper.selectAll());
     }
 
     /**
-     * 根据ID查询
-     * @param id
+     * Category条件查询
+     * @param category
      * @return
      */
     @Override
-    public Category findById(Integer id){
-        return  categoryMapper.selectByPrimaryKey(id);
+    public List<Category> findList(Category category){
+        //构建查询条件
+        Example example = createExample(category);
+        //根据构建的条件查询数据
+        return categoryMapper.selectByExample(example);
     }
 
 
     /**
-     * 增加
+     * Category构建查询对象
      * @param category
+     * @return
      */
-    @Override
-    public void add(Category category){
-        categoryMapper.insert(category);
-    }
-
-
-    /**
-     * 修改
-     * @param category
-     */
-    @Override
-    public void update(Category category){
-        categoryMapper.updateByPrimaryKey(category);
+    public Example createExample(Category category){
+        Example example=new Example(Category.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(category!=null){
+            // 分类ID
+            if(!StringUtils.isEmpty(category.getId())){
+                    criteria.andEqualTo("id",category.getId());
+            }
+            // 分类名称
+            if(!StringUtils.isEmpty(category.getName())){
+                    criteria.andLike("name","%"+category.getName()+"%");
+            }
+            // 商品数量
+            if(!StringUtils.isEmpty(category.getGoodsNum())){
+                    criteria.andEqualTo("goodsNum",category.getGoodsNum());
+            }
+            // 是否显示
+            if(!StringUtils.isEmpty(category.getIsShow())){
+                    criteria.andEqualTo("isShow",category.getIsShow());
+            }
+            // 是否导航
+            if(!StringUtils.isEmpty(category.getIsMenu())){
+                    criteria.andEqualTo("isMenu",category.getIsMenu());
+            }
+            // 排序
+            if(!StringUtils.isEmpty(category.getSeq())){
+                    criteria.andEqualTo("seq",category.getSeq());
+            }
+            // 上级ID
+            if(!StringUtils.isEmpty(category.getParentId())){
+                    criteria.andEqualTo("parentId",category.getParentId());
+            }
+            // 模板ID
+            if(!StringUtils.isEmpty(category.getTemplateId())){
+                    criteria.andEqualTo("templateId",category.getTemplateId());
+            }
+        }
+        return example;
     }
 
     /**
@@ -68,89 +120,40 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 修改Category
+     * @param category
+     */
+    @Override
+    public void update(Category category){
+        categoryMapper.updateByPrimaryKey(category);
+    }
 
     /**
-     * 条件查询
-     * @param searchMap
+     * 增加Category
+     * @param category
+     */
+    @Override
+    public void add(Category category){
+        categoryMapper.insert(category);
+    }
+
+    /**
+     * 根据ID查询Category
+     * @param id
      * @return
      */
     @Override
-    public List<Category> findList(Map<String, Object> searchMap){
-        Example example = createExample(searchMap);
-        return categoryMapper.selectByExample(example);
+    public Category findById(Integer id){
+        return  categoryMapper.selectByPrimaryKey(id);
     }
 
     /**
-     * 分页查询
-     * @param page
-     * @param size
+     * 查询Category全部数据
      * @return
      */
     @Override
-    public Page<Category> findPage(int page, int size){
-        PageHelper.startPage(page,size);
-        return (Page<Category>)categoryMapper.selectAll();
+    public List<Category> findAll() {
+        return categoryMapper.selectAll();
     }
-
-    /**
-     * 条件+分页查询
-     * @param searchMap 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public Page<Category> findPage(Map<String,Object> searchMap, int page, int size){
-        PageHelper.startPage(page,size);
-        Example example = createExample(searchMap);
-        return (Page<Category>)categoryMapper.selectByExample(example);
-    }
-
-    /**
-     * 构建查询对象
-     * @param searchMap
-     * @return
-     */
-    private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(Category.class);
-        Example.Criteria criteria = example.createCriteria();
-        if(searchMap!=null){
-            // 分类名称
-            if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){
-                criteria.andLike("name","%"+searchMap.get("name")+"%");
-           	}
-            // 是否显示
-            if(searchMap.get("isShow")!=null && !"".equals(searchMap.get("isShow"))){
-                criteria.andEqualTo("isShow",searchMap.get("isShow"));
-           	}
-            // 是否导航
-            if(searchMap.get("isMenu")!=null && !"".equals(searchMap.get("isMenu"))){
-                criteria.andLike("isMenu","%"+searchMap.get("isMenu")+"%");
-           	}
-
-            // 分类ID
-            if(searchMap.get("id")!=null ){
-                criteria.andEqualTo("id",searchMap.get("id"));
-            }
-            // 商品数量
-            if(searchMap.get("goodsNum")!=null ){
-                criteria.andEqualTo("goodsNum",searchMap.get("goodsNum"));
-            }
-            // 排序
-            if(searchMap.get("seq")!=null ){
-                criteria.andEqualTo("seq",searchMap.get("seq"));
-            }
-            // 上级ID
-            if(searchMap.get("parentId")!=null ){
-                criteria.andEqualTo("parentId",searchMap.get("parentId"));
-            }
-            // 模板ID
-            if(searchMap.get("templateId")!=null ){
-                criteria.andEqualTo("templateId",searchMap.get("templateId"));
-            }
-
-        }
-        return example;
-    }
-
 }

@@ -1,77 +1,66 @@
 package org.changgou.goods.service;
-
 import org.changgou.goods.pojo.Sku;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-/**
- * Sku表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Sku业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface SkuService {
 
     /***
-     * 查询所有
+     * Sku多条件分页查询
+     * @param sku
+     * @param page
+     * @param size
      * @return
      */
-    List<Sku> findAll();
+    PageInfo<Sku> findPage(Sku sku, int page, int size);
 
-    /**
-     * 根据ID查询
-     * @param id
+    /***
+     * Sku分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Sku findById(String id);
+    PageInfo<Sku> findPage(int page, int size);
 
     /***
-     * 新增
+     * Sku多条件搜索方法
      * @param sku
+     * @return
      */
-    void add(Sku sku);
+    List<Sku> findList(Sku sku);
 
     /***
-     * 修改
-     * @param sku
-     */
-    void update(Sku sku);
-
-    /***
-     * 删除
+     * 删除Sku
      * @param id
      */
     void delete(String id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Sku数据
+     * @param sku
      */
-    List<Sku> findList(Map<String, Object> searchMap);
+    void update(Sku sku);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Sku
+     * @param sku
+     */
+    void add(Sku sku);
+
+    /**
+     * 根据ID查询Sku
+     * @param id
      * @return
      */
-    Page<Sku> findPage(int page, int size);
+     Sku findById(String id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Sku
      * @return
      */
-    Page<Sku> findPage(Map<String, Object> searchMap, int page, int size);
-
-    void decrCount(String username);
-
-    //回滚库存
-    void resumeStockNum(String skuId, Integer num);
-
-
+    List<Sku> findAll();
 }

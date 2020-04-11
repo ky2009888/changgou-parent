@@ -1,74 +1,66 @@
 package org.changgou.goods.service;
-
 import org.changgou.goods.pojo.Para;
-import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import java.util.Map;
-/**
- * Para表服务接口
- *
- * @author lenovo
- * @since 2020-04-11 11:22:22
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Para业务层接口
+ * @Date 2019/6/14 0:16
+ *****/
 public interface ParaService {
 
     /***
-     * 查询所有
+     * Para多条件分页查询
+     * @param para
+     * @param page
+     * @param size
      * @return
      */
-    List<Para> findAll();
+    PageInfo<Para> findPage(Para para, int page, int size);
 
-    /**
-     * 根据ID查询
-     * @param id
+    /***
+     * Para分页查询
+     * @param page
+     * @param size
      * @return
      */
-    Para findById(Integer id);
+    PageInfo<Para> findPage(int page, int size);
 
     /***
-     * 新增
+     * Para多条件搜索方法
      * @param para
+     * @return
      */
-    void add(Para para);
+    List<Para> findList(Para para);
 
     /***
-     * 修改
-     * @param para
-     */
-    void update(Para para);
-
-    /***
-     * 删除
+     * 删除Para
      * @param id
      */
     void delete(Integer id);
 
     /***
-     * 多条件搜索
-     * @param searchMap
-     * @return
+     * 修改Para数据
+     * @param para
      */
-    List<Para> findList(Map<String, Object> searchMap);
+    void update(Para para);
 
     /***
-     * 分页查询
-     * @param page
-     * @param size
+     * 新增Para
+     * @param para
+     */
+    void add(Para para);
+
+    /**
+     * 根据ID查询Para
+     * @param id
      * @return
      */
-    Page<Para> findPage(int page, int size);
+     Para findById(Integer id);
 
     /***
-     * 多条件分页查询
-     * @param searchMap
-     * @param page
-     * @param size
+     * 查询所有Para
      * @return
      */
-    Page<Para> findPage(Map<String, Object> searchMap, int page, int size);
-
-
-
-
+    List<Para> findAll();
 }

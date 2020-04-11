@@ -1,65 +1,102 @@
 package org.changgou.goods.service.impl;
-
 import org.changgou.goods.dao.ParaMapper;
-import org.changgou.goods.service.ParaService;
 import org.changgou.goods.pojo.Para;
-import com.github.pagehelper.Page;
+import org.changgou.goods.service.ParaService;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
-
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-
-/**
- * @author Lenovo
- */
+/****
+ * @Author:shenkunlin
+ * @Description:Para业务层接口实现类
+ * @Date 2019/6/14 0:16
+ *****/
 @Service
 public class ParaServiceImpl implements ParaService {
-    /**
-     * 定义Para数据库表接口的句柄
-     */
-    @Resource
+
+    @Autowired
     private ParaMapper paraMapper;
 
+
     /**
-     * 查询全部列表
+     * Para条件+分页查询
+     * @param para 查询条件
+     * @param page 页码
+     * @param size 页大小
+     * @return 分页结果
+     */
+    @Override
+    public PageInfo<Para> findPage(Para para, int page, int size){
+        //分页
+        PageHelper.startPage(page,size);
+        //搜索条件构建
+        Example example = createExample(para);
+        //执行搜索
+        return new PageInfo<Para>(paraMapper.selectByExample(example));
+    }
+
+    /**
+     * Para分页查询
+     * @param page
+     * @param size
      * @return
      */
     @Override
-    public List<Para> findAll() {
-        return paraMapper.selectAll();
+    public PageInfo<Para> findPage(int page, int size){
+        //静态分页
+        PageHelper.startPage(page,size);
+        //分页查询
+        return new PageInfo<Para>(paraMapper.selectAll());
     }
 
     /**
-     * 根据ID查询
-     * @param id
+     * Para条件查询
+     * @param para
      * @return
      */
     @Override
-    public Para findById(Integer id){
-        return  paraMapper.selectByPrimaryKey(id);
+    public List<Para> findList(Para para){
+        //构建查询条件
+        Example example = createExample(para);
+        //根据构建的条件查询数据
+        return paraMapper.selectByExample(example);
     }
 
 
     /**
-     * 增加
+     * Para构建查询对象
      * @param para
+     * @return
      */
-    @Override
-    public void add(Para para){
-        paraMapper.insert(para);
-    }
-
-
-    /**
-     * 修改
-     * @param para
-     */
-    @Override
-    public void update(Para para){
-        paraMapper.updateByPrimaryKey(para);
+    public Example createExample(Para para){
+        Example example=new Example(Para.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(para!=null){
+            // id
+            if(!StringUtils.isEmpty(para.getId())){
+                    criteria.andEqualTo("id",para.getId());
+            }
+            // 名称
+            if(!StringUtils.isEmpty(para.getName())){
+                    criteria.andLike("name","%"+para.getName()+"%");
+            }
+            // 选项
+            if(!StringUtils.isEmpty(para.getOptions())){
+                    criteria.andEqualTo("options",para.getOptions());
+            }
+            // 排序
+            if(!StringUtils.isEmpty(para.getSeq())){
+                    criteria.andEqualTo("seq",para.getSeq());
+            }
+            // 模板ID
+            if(!StringUtils.isEmpty(para.getTemplateId())){
+                    criteria.andEqualTo("templateId",para.getTemplateId());
+            }
+        }
+        return example;
     }
 
     /**
@@ -71,77 +108,40 @@ public class ParaServiceImpl implements ParaService {
         paraMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 修改Para
+     * @param para
+     */
+    @Override
+    public void update(Para para){
+        paraMapper.updateByPrimaryKey(para);
+    }
 
     /**
-     * 条件查询
-     * @param searchMap
+     * 增加Para
+     * @param para
+     */
+    @Override
+    public void add(Para para){
+        paraMapper.insert(para);
+    }
+
+    /**
+     * 根据ID查询Para
+     * @param id
      * @return
      */
     @Override
-    public List<Para> findList(Map<String, Object> searchMap){
-        Example example = createExample(searchMap);
-        return paraMapper.selectByExample(example);
+    public Para findById(Integer id){
+        return  paraMapper.selectByPrimaryKey(id);
     }
 
     /**
-     * 分页查询
-     * @param page
-     * @param size
+     * 查询Para全部数据
      * @return
      */
     @Override
-    public Page<Para> findPage(int page, int size){
-        PageHelper.startPage(page,size);
-        return (Page<Para>)paraMapper.selectAll();
+    public List<Para> findAll() {
+        return paraMapper.selectAll();
     }
-
-    /**
-     * 条件+分页查询
-     * @param searchMap 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public Page<Para> findPage(Map<String,Object> searchMap, int page, int size){
-        PageHelper.startPage(page,size);
-        Example example = createExample(searchMap);
-        return (Page<Para>)paraMapper.selectByExample(example);
-    }
-
-    /**
-     * 构建查询对象
-     * @param searchMap
-     * @return
-     */
-    private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(Para.class);
-        Example.Criteria criteria = example.createCriteria();
-        if(searchMap!=null){
-            // 名称
-            if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){
-                criteria.andLike("name","%"+searchMap.get("name")+"%");
-           	}
-            // 选项
-            if(searchMap.get("options")!=null && !"".equals(searchMap.get("options"))){
-                criteria.andLike("options","%"+searchMap.get("options")+"%");
-           	}
-
-            // id
-            if(searchMap.get("id")!=null ){
-                criteria.andEqualTo("id",searchMap.get("id"));
-            }
-            // 排序
-            if(searchMap.get("seq")!=null ){
-                criteria.andEqualTo("seq",searchMap.get("seq"));
-            }
-            // 模板ID
-            if(searchMap.get("templateId")!=null ){
-                criteria.andEqualTo("templateId",searchMap.get("templateId"));
-            }
-
-        }
-        return example;
-    }
-
 }

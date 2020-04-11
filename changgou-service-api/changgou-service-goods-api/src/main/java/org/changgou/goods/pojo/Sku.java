@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * sku实体类
+ * sku实体类 SKU：某款商品的独立属性
  *
  * @author Lenovo
  */

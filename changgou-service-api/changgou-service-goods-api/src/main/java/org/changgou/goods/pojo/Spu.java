@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * spu实体类
+ * SPU:同款商品的公共属性实体类
  * @author Lenovo
  *
  */

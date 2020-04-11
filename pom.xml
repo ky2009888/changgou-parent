@@ -15,6 +15,7 @@
         <module>changgou-eureka</module>
         <module>changgou-common</module>
         <module>changgou-common-db</module>
+        <module>code-template</module>
     </modules>
     <packaging>pom</packaging>
     <description>电商项目的父工程</description>
