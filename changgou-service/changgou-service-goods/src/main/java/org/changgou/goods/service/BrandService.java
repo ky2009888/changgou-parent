@@ -3,7 +3,7 @@ import org.changgou.goods.pojo.Brand;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
 /****
- * @Author:shenkunlin
+ * @Author:ky2009888
  * @Description:Brand业务层接口
  * @Date 2019/6/14 0:16
  *****/

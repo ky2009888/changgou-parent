@@ -1,7 +1,7 @@
 package org.changgou.code.swagger;
 
 /*****
- * @Author: shenkunlin
+ * @Author: ky2009888
  * @Date: 2019/7/22 15:35
  * @Description: com.itheima.code.util
  *  生成JavaBean的属性配置

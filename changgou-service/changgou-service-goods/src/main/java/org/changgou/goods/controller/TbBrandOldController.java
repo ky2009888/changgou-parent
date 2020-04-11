@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("tbBrand")
 @CrossOrigin
-public class TbBrandController {
+public class TbBrandOldController {
     /**
      * 服务对象
      */

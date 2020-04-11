@@ -1,9 +1,10 @@
 package org.changgou.goods.service;
+import org.apache.ibatis.annotations.Select;
 import org.changgou.goods.pojo.Category;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
 /****
- * @Author:shenkunlin
+ * @Author:ky2009888
  * @Description:Category业务层接口
  * @Date 2019/6/14 0:16
  *****/
@@ -17,7 +18,13 @@ public interface CategoryService {
      * @return
      */
     PageInfo<Category> findPage(Category category, int page, int size);
-
+    /**
+     * 根据parentId查询所有的子分类
+     *
+     * @param parentId 父分类ID
+     * @return List<Category>
+     */
+    List<Category> findByParentId(Integer parentId);
     /***
      * Category分页查询
      * @param page

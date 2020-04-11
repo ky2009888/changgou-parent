@@ -19,7 +19,7 @@ import java.util.List;
  * @author makejava
  * @since 2020-04-07 11:22:23
  */
-@Service("brandService")
+@Service("tbBrandService")
 public class TbBrandServiceImpl implements TbBrandService {
     @Resource
     private TbBrandMapper tbBrandDao;

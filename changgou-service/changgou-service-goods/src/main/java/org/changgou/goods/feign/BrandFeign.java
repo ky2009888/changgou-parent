@@ -1,10 +1,14 @@
 package org.changgou.goods.feign;
-import entity.Result;
+import com.changgou.utils.Result;
+import com.github.pagehelper.PageInfo;
+import org.changgou.goods.pojo.Brand;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /****
- * @Author:shenkunlin
+ * @Author:ky2009888
  * @Description:
  * @Date 2019/6/18 13:58
  *****/
@@ -20,7 +24,7 @@ public interface BrandFeign {
      * @return
      */
     @PostMapping(value = "/search/{page}/{size}" )
-    Result<PageInfo> findPage(@RequestBody(required = false) Brand brand, @PathVariable  int page, @PathVariable  int size);
+    Result<PageInfo> findPage(@RequestBody(required = false) Brand brand, @PathVariable int page, @PathVariable  int size);
 
     /***
      * Brand分页搜索实现

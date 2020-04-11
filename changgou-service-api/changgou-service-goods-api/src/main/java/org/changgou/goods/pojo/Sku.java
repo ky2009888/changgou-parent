@@ -91,4 +91,8 @@ public class Sku implements Serializable {
      * 商品状态 1-正常，2-下架，3-删除
      */
     private String status;
+    /**
+     * 版本
+     */
+    private Integer version;
 }

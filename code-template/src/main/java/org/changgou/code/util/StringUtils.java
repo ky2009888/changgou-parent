@@ -1,7 +1,7 @@
 package org.changgou.code.util;
 
 /****
- * @Author:shenkunlin
+ * @Author:ky2009888
  * @Description:字符串处理
  * @Date 2019/6/14 19:51
  *****/
