@@ -131,6 +131,18 @@ public class BrandController {
         Brand brand = brandService.findById(id);
         return new Result<Brand>(true,StatusCode.OK,"查询成功",brand);
     }
+    /***
+     * 根据ID查询Brand数据
+     * @param categoryId 分类ID
+     * @return Result<List<Brand>>
+     */
+    @ApiOperation(value = "Brand根据ID查询",notes = "根据ID查询Brand方法详情",tags = {"BrandController"})
+    @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "Integer")
+    @GetMapping("/findByCategoryId")
+    public Result<List<Brand>> findByCategoryId(Integer categoryId){
+        List<Brand> brandList = brandService.findByCategoryId(categoryId);
+        return new Result(true,StatusCode.OK,"查询成功",brandList);
+    }
 
     /***
      * 查询Brand全部数据

@@ -73,6 +73,18 @@ public class ParaController {
         List<Para> list = paraService.findList(para);
         return new Result<List<Para>>(true,StatusCode.OK,"查询成功",list);
     }
+    /***
+     * 根据分类ID查询参数列表
+     * @param categoryId
+     * @return Result<List<Para>>
+     */
+    @ApiOperation(value = "根据分类ID查询参数列表",notes = "根据分类ID查询参数列表方法详情",tags = {"ParaController"})
+    @GetMapping(value = "/findParamListByCategoryId" )
+    public Result<List<Para>> findParamListByCategoryId(@RequestBody(required = false) @ApiParam(name = "categoryId",value = "传入JSON数据",required = false) Integer categoryId){
+        //调用ParaService实现条件查询Para
+        List<Para> list = paraService.findParamListByCategoryId(categoryId);
+        return new Result<List<Para>>(true,StatusCode.OK,"查询成功",list);
+    }
 
     /***
      * 根据ID删除品牌数据

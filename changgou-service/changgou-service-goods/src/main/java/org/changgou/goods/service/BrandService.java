@@ -1,7 +1,10 @@
 package org.changgou.goods.service;
+
 import org.changgou.goods.pojo.Brand;
 import com.github.pagehelper.PageInfo;
+
 import java.util.List;
+
 /****
  * @Author:ky2009888
  * @Description:Brand业务层接口
@@ -53,10 +56,19 @@ public interface BrandService {
 
     /**
      * 根据ID查询Brand
+     *
      * @param id
      * @return
      */
-     Brand findById(Integer id);
+    Brand findById(Integer id);
+
+    /**
+     * 根据分类ID，CategoryId查询Brand
+     *
+     * @param categoryId 分类ID
+     * @return List<Brand>
+     */
+    public List<Brand> findByCategoryId(Integer categoryId);
 
     /***
      * 查询所有Brand

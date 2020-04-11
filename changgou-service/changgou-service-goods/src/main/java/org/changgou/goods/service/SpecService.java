@@ -1,7 +1,10 @@
 package org.changgou.goods.service;
+
 import org.changgou.goods.pojo.Spec;
 import com.github.pagehelper.PageInfo;
+
 import java.util.List;
+
 /****
  * @Author:ky2009888
  * @Description:Spec业务层接口
@@ -53,14 +56,23 @@ public interface SpecService {
 
     /**
      * 根据ID查询Spec
+     *
      * @param id
      * @return
      */
-     Spec findById(Integer id);
+    Spec findById(Integer id);
 
     /***
      * 查询所有Spec
      * @return
      */
     List<Spec> findAll();
+
+    /**
+     * 根据分类ID查询规格列表
+     *
+     * @param categoryId 分类ID
+     * @return List<Spec>
+     */
+    List<Spec> findSpecListByCategoryId(Integer categoryId);
 }
