@@ -52,8 +52,9 @@ public class SpuServiceImpl implements SpuService {
     @Resource
     private BrandMapper brandMapper;
 
+
     /**
-     * 新增商品信息
+     * 新增商品信息（包括修改的内容）
      *
      * @param goods 商品信息
      */
@@ -62,10 +63,17 @@ public class SpuServiceImpl implements SpuService {
         //新增SPU
         idWorker = new IdWorker();
         Spu spu = goods.getSpu();
-        //0：未审核，1：已审核，2：审核未通过
-        spu.setStatus("1");
-        spu.setId(idWorker.nextId() + "");
-        spuMapper.insertSelective(spu);
+        if (StringUtils.isEmpty(spu.getId())) {
+            //0：未审核，1：已审核，2：审核未通过
+            spu.setStatus("1");
+            spu.setId(idWorker.nextId() + "");
+            spuMapper.insertSelective(spu);
+        } else {
+            spuMapper.updateByPrimaryKey(spu);
+            Sku sku = new Sku();
+            sku.setSpuId(spu.getId());
+            skuMapper.delete(sku);
+        }
         //新增SKU
         List<Sku> skuList = goods.getSkuList();
         Category category = categoryMapper.selectByPrimaryKey(spu.getCategory3Id());
@@ -93,6 +101,24 @@ public class SpuServiceImpl implements SpuService {
             sku.setBrandName(brand.getName());
             skuMapper.insertSelective(sku);
         }
+    }
+
+    /**
+     * 根据商品ID查询商品信息
+     *
+     * @param id 商品ID
+     * @return Goods
+     */
+    @Override
+    public Goods findGoodsById(String id) {
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        Sku sku = new Sku();
+        sku.setSpuId(id);
+        List<Sku> skuList = skuMapper.selectByExample(sku);
+        Goods goods = new Goods();
+        goods.setSpu(spu);
+        goods.setSkuList(skuList);
+        return goods;
     }
 
     /**

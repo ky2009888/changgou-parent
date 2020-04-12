@@ -1,8 +1,11 @@
 package org.changgou.goods.service;
+
 import org.changgou.goods.pojo.Goods;
 import org.changgou.goods.pojo.Spu;
 import com.github.pagehelper.PageInfo;
+
 import java.util.List;
+
 /****
  * @Author:ky2009888
  * @Description:Spu业务层接口
@@ -54,20 +57,30 @@ public interface SpuService {
 
     /**
      * 根据ID查询Spu
+     *
      * @param id
      * @return
      */
-     Spu findById(String id);
+    Spu findById(String id);
 
     /***
      * 查询所有Spu
      * @return
      */
     List<Spu> findAll();
+
     /**
      * 新增商品信息
      *
      * @param goods 商品信息
      */
-    public void addGoods(Goods goods);
+    void addGoods(Goods goods);
+
+    /**
+     * 根据商品ID查询商品信息
+     *
+     * @param id 商品ID
+     * @return Goods
+     */
+    Goods findGoodsById(String id);
 }
