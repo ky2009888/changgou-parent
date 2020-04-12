@@ -5,6 +5,7 @@ import org.changgou.goods.pojo.Spu;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /****
  * @Author:ky2009888
@@ -83,4 +84,36 @@ public interface SpuService {
      * @return Goods
      */
     Goods findGoodsById(String id);
+
+    /**
+     * 审核商品
+     *
+     * @param spuId
+     * @return boolen true:成功 false:失败
+     */
+    boolean auditGoods(String spuId);
+
+    /**
+     * 下架商品
+     *
+     * @param spuId
+     * @return boolean true:成功 false:失败
+     */
+    boolean pullGoods(String spuId);
+
+    /**
+     * 上架商品
+     *
+     * @param spuId
+     * @return boolean true:成功 false:失败
+     */
+    boolean pushGoods(String spuId);
+
+    /**
+     * 批量上架商品
+     *
+     * @param spuIds 一组商品ID
+     * @return List<Map < String, Boolean>> true:成功 false:失败
+     */
+    List<Map<String, Boolean>> batchPushGoods(String[] spuIds);
 }
