@@ -34,9 +34,9 @@ public class SpuController {
      * @return Result
      */
     @GetMapping
-    public Result auditGoods(String spuId) {
+    public Result<Goods> auditGoods(String spuId) {
         boolean goods = spuService.auditGoods(spuId);
-        return new Result(goods, StatusCode.OK, "审核成功");
+        return new Result<Goods>(goods, StatusCode.OK, "审核成功");
     }
 
     /**
@@ -46,9 +46,9 @@ public class SpuController {
      * @return Result
      */
     @GetMapping
-    public Result pullGoods(String spuId) {
+    public Result<Goods> pullGoods(String spuId) {
         boolean goods = spuService.pullGoods(spuId);
-        return new Result(goods, StatusCode.OK, "下架成功");
+        return new Result<Goods>(goods, StatusCode.OK, "下架成功");
     }
 
     /**
@@ -58,9 +58,9 @@ public class SpuController {
      * @return Result
      */
     @GetMapping
-    public Result batchPushGoods(String[] spuIds) {
+    public Result<Map<String, Boolean>> batchPushGoods(String[] spuIds) {
         List<Map<String, Boolean>> mapList = spuService.batchPushGoods(spuIds);
-        return new Result(true, StatusCode.OK, "批量上架成功", mapList);
+        return new Result<Map<String, Boolean>>(true, StatusCode.OK, "批量上架成功", mapList);
     }
 
     /**
@@ -70,9 +70,9 @@ public class SpuController {
      * @return Result
      */
     @GetMapping
-    public Result pushGoods(String spuId) {
+    public Result<Goods> pushGoods(String spuId) {
         boolean goods = spuService.pullGoods(spuId);
-        return new Result(goods, StatusCode.OK, "上架成功");
+        return new Result<Goods>(goods, StatusCode.OK, "上架成功");
     }
 
     /**
@@ -100,10 +100,10 @@ public class SpuController {
             @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
     })
     @PostMapping(value = "/search/{page}/{size}")
-    public Result<PageInfo> findPage(@RequestBody(required = false) @ApiParam(name = "Spu对象", value = "传入JSON数据", required = false) Spu spu, @PathVariable int page, @PathVariable int size) {
+    public Result<PageInfo<Spu>> findPage(@RequestBody(required = false) @ApiParam(name = "Spu对象", value = "传入JSON数据", required = false) Spu spu, @PathVariable int page, @PathVariable int size) {
         //调用SpuService实现分页条件查询Spu
         PageInfo<Spu> pageInfo = spuService.findPage(spu, page, size);
-        return new Result(true, StatusCode.OK, "查询成功", pageInfo);
+        return new Result<PageInfo<Spu>>(true, StatusCode.OK, "查询成功", pageInfo);
     }
 
     /***
@@ -118,10 +118,10 @@ public class SpuController {
             @ApiImplicitParam(paramType = "path", name = "size", value = "每页显示条数", required = true, dataType = "Integer")
     })
     @GetMapping(value = "/search/{page}/{size}")
-    public Result<PageInfo> findPage(@PathVariable int page, @PathVariable int size) {
+    public Result<PageInfo<Spu>> findPage(@PathVariable int page, @PathVariable int size) {
         //调用SpuService实现分页查询Spu
         PageInfo<Spu> pageInfo = spuService.findPage(page, size);
-        return new Result<PageInfo>(true, StatusCode.OK, "查询成功", pageInfo);
+        return new Result<PageInfo<Spu>>(true, StatusCode.OK, "查询成功", pageInfo);
     }
 
     /***
