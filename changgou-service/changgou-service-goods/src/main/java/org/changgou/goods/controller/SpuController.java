@@ -27,6 +27,42 @@ public class SpuController {
     private SpuService spuService;
 
     /**
+     * 商品审核
+     *
+     * @param spuId
+     * @return Result
+     */
+    @GetMapping
+    public Result auditGoods(String spuId) {
+        boolean goods = spuService.auditGoods(spuId);
+        return new Result(goods, StatusCode.OK, "审核成功");
+    }
+
+    /**
+     * 下架商品
+     *
+     * @param spuId
+     * @return Result
+     */
+    @GetMapping
+    public Result pullGoods(String spuId) {
+        boolean goods = spuService.pullGoods(spuId);
+        return new Result(goods, StatusCode.OK, "下架成功");
+    }
+
+    /**
+     * 上架商品
+     *
+     * @param spuId
+     * @return Result
+     */
+    @GetMapping
+    public Result pushGoods(String spuId) {
+        boolean goods = spuService.pullGoods(spuId);
+        return new Result(goods, StatusCode.OK, "上架成功");
+    }
+
+    /**
      * 根据SPU的主键进行查询
      *
      * @param id spuId
