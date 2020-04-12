@@ -16,9 +16,7 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /****
  * @Author:ky2009888
@@ -119,6 +117,83 @@ public class SpuServiceImpl implements SpuService {
         goods.setSpu(spu);
         goods.setSkuList(skuList);
         return goods;
+    }
+
+    /**
+     * 审核商品
+     *
+     * @param spuId
+     * @return boolen true:成功 false:失败
+     */
+    @Override
+    public boolean auditGoods(String spuId) {
+        Spu spu = spuMapper.selectByPrimaryKey(spuId);
+        if (spu.getIsDelete().equalsIgnoreCase("1")) {
+            throw new RuntimeException("该商品" + spuId + "已经删除");
+        }
+        //审核通过
+        spu.setStatus("1");
+        //上架
+        spu.setIsMarketable("1");
+        int result = spuMapper.updateByPrimaryKeySelective(spu);
+        return result > 0;
+    }
+
+    /**
+     * 下架商品
+     *
+     * @param spuId
+     * @return boolean true:成功 false:失败
+     */
+    @Override
+    public boolean pullGoods(String spuId) {
+        Spu spu = spuMapper.selectByPrimaryKey(spuId);
+        if (spu.getIsDelete().equalsIgnoreCase("1")) {
+            throw new RuntimeException("该商品" + spuId + "已经删除");
+        }
+        //审核通过
+        spu.setIsMarketable("0");
+        int result = spuMapper.updateByPrimaryKeySelective(spu);
+        return result > 0;
+    }
+
+    /**
+     * 上架商品
+     *
+     * @param spuId
+     * @return boolean true:成功 false:失败
+     */
+    @Override
+    public boolean pushGoods(String spuId) {
+        Spu spu = spuMapper.selectByPrimaryKey(spuId);
+        if (spu.getIsDelete().equalsIgnoreCase("1")) {
+            throw new RuntimeException("该商品" + spuId + "已经删除");
+        }
+        if (!spu.getStatus().equals("1")) {
+            throw new RuntimeException("该商品" + spuId + "没有审核通过");
+        }
+        //上架商品
+        spu.setIsMarketable("1");
+        int result = spuMapper.updateByPrimaryKeySelective(spu);
+        return result > 0;
+    }
+
+    /**
+     * 批量上架商品
+     *
+     * @param spuIds 一组商品ID
+     * @return boolean true:成功 false:失败
+     */
+    @Override
+    public List<Map<String,Boolean>> batchPushGoods(String[] spuIds) {
+        List<Map<String,Boolean>> spuIdList = new ArrayList<>();
+        for (String spuId : spuIds) {
+            boolean pullGoods = pullGoods(spuId);
+            Map<String,Boolean> resultMap = new HashMap<>();
+            resultMap.put(spuId,pullGoods);
+            spuIdList.add(resultMap);
+        }
+        return spuIdList;
     }
 
     /**
