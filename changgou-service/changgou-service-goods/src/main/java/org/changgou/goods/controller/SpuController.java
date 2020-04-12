@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /****
  * @Author:ky2009888
@@ -48,6 +49,18 @@ public class SpuController {
     public Result pullGoods(String spuId) {
         boolean goods = spuService.pullGoods(spuId);
         return new Result(goods, StatusCode.OK, "下架成功");
+    }
+
+    /**
+     * 批量上架商品
+     *
+     * @param spuIds
+     * @return Result
+     */
+    @GetMapping
+    public Result batchPushGoods(String[] spuIds) {
+        List<Map<String, Boolean>> mapList = spuService.batchPushGoods(spuIds);
+        return new Result(true, StatusCode.OK, "批量上架成功", mapList);
     }
 
     /**
