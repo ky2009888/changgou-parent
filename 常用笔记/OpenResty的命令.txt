@@ -1,0 +1,9 @@
+ps 我的安装在/opt/openresty/nginx 目录
+--启动
+/opt/openresty/nginx/sbin/nginx
+--停止
+/opt/openresty/nginx/sbin/nginx -s stop
+--重启
+/opt/openresty/nginx/sbin/nginx -s reload
+--检验nginx配置是否正确
+/opt/openresty/nginx/sbin/nginx -t
