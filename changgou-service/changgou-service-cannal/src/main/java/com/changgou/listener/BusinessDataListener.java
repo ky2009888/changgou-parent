@@ -107,10 +107,10 @@ public class BusinessDataListener {
         String position = "";
         for (CanalEntry.Column column : rowData.getAfterColumnsList()) {
             columJson = new JSONObject();
-            if (column.getName().equals("url")) {
+            if (column.getName().equals("image")) {
                 columJson.put(column.getName(), column.getValue());
             }
-            if (column.getName().equals("image")) {
+            if (column.getName().equals("url")) {
                 columJson.put(column.getName(), column.getValue());
                 columArray.add(columJson);
             }
