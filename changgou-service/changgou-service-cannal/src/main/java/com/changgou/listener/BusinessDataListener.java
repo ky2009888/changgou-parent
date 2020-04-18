@@ -23,7 +23,7 @@ public class BusinessDataListener {
      */
     @UpdateListenPoint(schema = "changgou_business", table = {"tb_ad"})
     public void adUpdate(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
-        printTip(rowData);
+        handleUpdateData(rowData);
     }
 
     /**
@@ -35,8 +35,8 @@ public class BusinessDataListener {
     @InsertListenPoint(schema = "changgou_business", table = {"tb_ad"})
     public void adInsert(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
         log.info("广告数据发生变化:");
-        log.info("-------------------------------------------------------------------------------更改之后的数据:");
-        rowData.getAfterColumnsList().forEach((c) -> log.info("更改后数据: " + c.getName() + " :: " + c.getValue()));
+        log.info("-------------------------------------------------------------------------------添加数据之后的数据:");
+        handleInsertData(rowData);
     }
 
     /**
@@ -47,19 +47,69 @@ public class BusinessDataListener {
      */
     @DeleteListenPoint(schema = "changgou_business", table = {"tb_ad"})
     public void adDelete(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
-        printTip(rowData);
+        handleDeleteData(rowData);
     }
 
     /**
-     * 打印数据
+     * 通用处理删除和修改数据
      *
      * @param rowData 数据行
      */
-    private void printTip(CanalEntry.RowData rowData) {
+    private void handleDeleteData(CanalEntry.RowData rowData) {
         log.info("广告数据发生变化:");
         log.info("-------------------------------------------------------------------------------更改之前的数据:");
         rowData.getBeforeColumnsList().forEach((c) -> log.info("更改前数据: " + c.getName() + " :: " + c.getValue()));
         log.info("-------------------------------------------------------------------------------更改之后的数据:");
         rowData.getAfterColumnsList().forEach((c) -> log.info("更改后数据: " + c.getName() + " :: " + c.getValue()));
+    }
+
+    /**
+     * 通用处理删除和修改数据
+     *
+     * @param rowData 数据行
+     */
+    private void handleUpdateData(CanalEntry.RowData rowData) {
+        log.info("广告数据发生变化:");
+        log.info("-------------------------------------------------------------------------------更改之前的数据:");
+        rowData.getBeforeColumnsList().forEach((c) -> log.info("更改前数据: " + c.getName() + " :: " + c.getValue()));
+        log.info("-------------------------------------------------------------------------------更改之后的数据:");
+        rowData.getAfterColumnsList().forEach((c) -> log.info("更改后数据: " + c.getName() + " :: " + c.getValue()));
+    }
+
+    /**
+     * 通用处理新增数据
+     *
+     * @param rowData 数据行
+     */
+    private void handleInsertData(CanalEntry.RowData rowData) {
+        log.info("-------------------------------------------------------------------------------更改之后的数据:");
+        rowData.getAfterColumnsList().forEach((c) -> log.info("更改后数据: " + c.getName() + " :: " + c.getValue()));
+    }
+
+    /**
+     * 通用的操作,进行数据的增加，修改，删除操作的通用操作
+     *
+     * @param eventType 事件类型
+     * @param rowData   行数据
+     */
+    @ListenPoint(schema = "changgou_business", table = {"tb_ad"},
+            eventType = {CanalEntry.EventType.DELETE, CanalEntry.EventType.UPDATE, CanalEntry.EventType.INSERT}, destination = "example")
+    public void businessData(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
+        switch (eventType.getNumber()) {
+            //INSERT
+            case 1:
+                handleInsertData(rowData);
+                break;
+            //UPDATE
+            case 2:
+                handleUpdateData(rowData);
+                break;
+            //DELETE
+            case 3:
+                handleDeleteData(rowData);
+                break;
+            default:
+                break;
+        }
     }
 }
