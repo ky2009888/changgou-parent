@@ -1,8 +1,14 @@
 package com.changgou.listener;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.protocol.CanalEntry;
+import com.changgou.util.RedisUtil;
 import com.xpand.starter.canal.annotation.*;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 功能描述:
@@ -14,6 +20,20 @@ import lombok.extern.slf4j.Slf4j;
 @CanalEventListener
 @Slf4j
 public class BusinessDataListener {
+    /**
+     * 定义Redis句柄
+     */
+    @Resource
+    private RedisUtil redisUtil;
+    /**
+     * 定义columJson句柄
+     */
+    private JSONObject columJson;
+    /**
+     * 定义columJson句柄
+     */
+    private JSONArray columArray;
+
     /**
      * 更新数据监听
      *
@@ -56,11 +76,13 @@ public class BusinessDataListener {
      * @param rowData 数据行
      */
     private void handleDeleteData(CanalEntry.RowData rowData) {
-        log.info("广告数据发生变化:");
-        log.info("-------------------------------------------------------------------------------更改之前的数据:");
-        rowData.getBeforeColumnsList().forEach((c) -> log.info("更改前数据: " + c.getName() + " :: " + c.getValue()));
-        log.info("-------------------------------------------------------------------------------更改之后的数据:");
-        rowData.getAfterColumnsList().forEach((c) -> log.info("更改后数据: " + c.getName() + " :: " + c.getValue()));
+        String position = "";
+        for (CanalEntry.Column column : rowData.getAfterColumnsList()) {
+            if (column.getName().equals("position")) {
+                position = column.getValue();
+            }
+        }
+        redisUtil.expire("ad_" + position, 0);
     }
 
     /**
@@ -69,11 +91,7 @@ public class BusinessDataListener {
      * @param rowData 数据行
      */
     private void handleUpdateData(CanalEntry.RowData rowData) {
-        log.info("广告数据发生变化:");
-        log.info("-------------------------------------------------------------------------------更改之前的数据:");
-        rowData.getBeforeColumnsList().forEach((c) -> log.info("更改前数据: " + c.getName() + " :: " + c.getValue()));
-        log.info("-------------------------------------------------------------------------------更改之后的数据:");
-        rowData.getAfterColumnsList().forEach((c) -> log.info("更改后数据: " + c.getName() + " :: " + c.getValue()));
+        handleJsonResult(rowData);
     }
 
     /**
@@ -82,8 +100,25 @@ public class BusinessDataListener {
      * @param rowData 数据行
      */
     private void handleInsertData(CanalEntry.RowData rowData) {
-        log.info("-------------------------------------------------------------------------------更改之后的数据:");
-        rowData.getAfterColumnsList().forEach((c) -> log.info("更改后数据: " + c.getName() + " :: " + c.getValue()));
+        handleJsonResult(rowData);
+    }
+
+    private void handleJsonResult(CanalEntry.RowData rowData) {
+        String position = "";
+        for (CanalEntry.Column column : rowData.getAfterColumnsList()) {
+            columJson = new JSONObject();
+            if (column.getName().equals("url")) {
+                columJson.put(column.getName(), column.getValue());
+            }
+            if (column.getName().equals("image")) {
+                columJson.put(column.getName(), column.getValue());
+                columArray.add(columJson);
+            }
+            if (column.getName().equals("position")) {
+                position = column.getValue();
+            }
+        }
+        redisUtil.set("ad_" + position, columArray.toJSONString());
     }
 
     /**
