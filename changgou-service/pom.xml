@@ -13,6 +13,7 @@
     <modules>
         <module>changgou-service-goods</module>
         <module>changgou-service-file</module>
+        <module>changgou-service-cannal</module>
     </modules>
     <dependencies>
         <!--对changgou-common的依赖-->

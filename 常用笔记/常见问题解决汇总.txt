@@ -1,0 +1,8 @@
+1、问题描述:
+   两个docker容器之间进行通信，其中一个docker容器安装的是canal，另外一个docker容器安装的是MySQL，两个容器都是安装在centos7虚拟机上面。
+   两个容器之间通信如果通过centos7的主机的IP和端口进行通信，则失败。
+   问题解决：
+   两个容器之间通信直接通过docker容器的私有IP地址进行通信就行。
+   查看docker容器的IP地址的方法:
+   docker inspect 容器名称
+   返回JSON结果中查看IPAddress。

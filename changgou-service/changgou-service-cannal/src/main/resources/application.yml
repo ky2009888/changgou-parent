@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: changgou-service-cannal
+canal:
+  client:
+    instances:
+      example:
+        host: 192.168.64.64
+        port: 11111
+        batchSize: 1000
+server:
+  port: 18083
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+  instance:
+    prefer-ip-address: true
+feign:
+  hystrix:
+    enabled: true
