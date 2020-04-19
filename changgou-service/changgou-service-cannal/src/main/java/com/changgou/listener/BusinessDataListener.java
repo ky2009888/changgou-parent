@@ -27,10 +27,6 @@ public class BusinessDataListener {
     /**
      * 定义columJson句柄
      */
-    private JSONObject columJson;
-    /**
-     * 定义columJson句柄
-     */
     private JSONArray columArray;
 
     /**
@@ -105,7 +101,7 @@ public class BusinessDataListener {
     private void handleJsonResult(CanalEntry.RowData rowData) {
         String position = "";
         for (CanalEntry.Column column : rowData.getAfterColumnsList()) {
-            columJson = new JSONObject();
+            JSONObject columJson = new JSONObject();
             if (column.getName().equals("image")) {
                 columJson.put(column.getName(), column.getValue());
             }
