@@ -85,6 +85,6 @@ GET /skuinfo/skuinfo/_search
 GET /skuinfo/skuinfo/_search
 {
   "query": {
-    "field": {"name": "吉金梁"}
+    "term": {"name": "梁"}
   }
 }
