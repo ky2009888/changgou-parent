@@ -88,3 +88,56 @@ GET /skuinfo/skuinfo/_search
     "term": {"name": "梁"}
   }
 }
+#根据范围进行查询
+GET skuinfo/skuinfo/_search
+{
+  "query": {
+    "range": {
+      "age": {
+        "gte": 10,
+        "lte": 20
+      }
+    }
+  }
+}
+#根据范围进行查询
+GET skuinfo/skuinfo/_search
+{
+  "query": {
+    "range": {
+      "age": {
+        "gte": 10,
+        "lte": 40
+      }
+    }
+  },
+  "sort": [
+    {
+      "age": {
+        "order": "desc"
+      }
+    }
+  ]
+}
+#根据姓名和年龄范围进行查询
+GET skuinfo/skuinfo/_search
+{
+  "query": {
+    "bool": {
+      "must": [{
+        "term":{
+          "name":{
+            "value": "吉"
+          }
+        }
+      },{
+        "range": {
+          "age": {
+            "gte": 10,
+             "lte": 40
+          }
+        }
+      }]
+    }
+  }
+}
