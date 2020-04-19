@@ -1,0 +1,90 @@
+#根据关键词进行搜索
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+#获取所有的索引库
+GET _cat/indices?v
+#删除索引库
+DELETE /skuinfo
+#新增索引库
+PUT /skuinfo
+#添加映射
+PUT /skuinfo/skuinfo/_mapping
+{
+  "properties": {
+    "name":{
+      "type":"text",
+      "analyzer": "ik_smart",
+      "search_analyzer": "ik_smart",
+      "store":false
+    }
+  }
+}
+#新增数据
+PUT /skuinfo/skuinfo/1
+{
+  "name":"吉金梁"
+}
+PUT /skuinfo/skuinfo/2
+{
+  "name":"吉佑辉"
+}
+PUT /skuinfo/skuinfo/3
+{
+  "name":"吉曼宁"
+}
+PUT /skuinfo/skuinfo/4
+{
+  "name":"李春红"
+}
+#查询数据
+GET /skuinfo/skuinfo/4
+#更新数据
+POST /skuinfo/skuinfo/4/_update
+{
+  "doc":{
+    "name":"吉金梁"
+  }
+}
+PUT skuinfo/_mapping/skuinfo/
+{
+  "properties": {
+    "name": {
+      "type":     "text",
+      "fielddata": true
+    }
+  }
+}
+#根据字段进行查询
+GET /skuinfo/skuinfo/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "name": {
+        "order": "asc"
+      }
+    }
+  ]
+}
+#分页查询
+GET /skuinfo/skuinfo/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "from": 0,
+  "size": 2
+}
+#根据字段查询
+GET /skuinfo/skuinfo/_search
+{
+  "query": {
+    "field": {"name": "吉金梁"}
+  }
+}

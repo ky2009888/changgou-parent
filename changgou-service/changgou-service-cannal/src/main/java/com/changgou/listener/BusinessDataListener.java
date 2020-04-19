@@ -8,7 +8,6 @@ import com.xpand.starter.canal.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 功能描述:
