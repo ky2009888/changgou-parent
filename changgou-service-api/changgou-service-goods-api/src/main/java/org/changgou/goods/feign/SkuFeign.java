@@ -1,9 +1,9 @@
 package org.changgou.goods.feign;
+
 import com.changgou.utils.Result;
 import com.github.pagehelper.PageInfo;
-import org.changgou.goods.pojo.Spec;
+import org.changgou.goods.pojo.Sku;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,21 +14,21 @@ import java.util.List;
  * @Date 2019/6/18 13:58
  *****/
 @FeignClient(name="user")
-@RequestMapping("/spec")
-public interface SpecFeign {
+@RequestMapping("/sku")
+public interface SkuFeign {
 
     /***
-     * Spec分页条件搜索实现
-     * @param spec
+     * Sku分页条件搜索实现
+     * @param sku
      * @param page
      * @param size
      * @return
      */
     @PostMapping(value = "/search/{page}/{size}" )
-    Result<PageInfo> findPage(@RequestBody(required = false) Spec spec, @PathVariable  int page, @PathVariable  int size);
+    Result<PageInfo> findPage(@RequestBody(required = false) Sku sku, @PathVariable  int page, @PathVariable  int size);
 
     /***
-     * Spec分页搜索实现
+     * Sku分页搜索实现
      * @param page:当前页
      * @param size:每页显示多少条
      * @return
@@ -38,11 +38,11 @@ public interface SpecFeign {
 
     /***
      * 多条件搜索品牌数据
-     * @param spec
+     * @param sku
      * @return
      */
     @PostMapping(value = "/search" )
-    Result<List<Spec>> findList(@RequestBody(required = false) Spec spec);
+    Result<List<Sku>> findList(@RequestBody(required = false) Sku sku);
 
     /***
      * 根据ID删除品牌数据
@@ -50,37 +50,37 @@ public interface SpecFeign {
      * @return
      */
     @DeleteMapping(value = "/{id}" )
-    Result delete(@PathVariable Integer id);
+    Result delete(@PathVariable String id);
 
     /***
-     * 修改Spec数据
-     * @param spec
+     * 修改Sku数据
+     * @param sku
      * @param id
      * @return
      */
     @PutMapping(value="/{id}")
-    Result update(@RequestBody Spec spec,@PathVariable Integer id);
+    Result update(@RequestBody Sku sku,@PathVariable String id);
 
     /***
-     * 新增Spec数据
-     * @param spec
+     * 新增Sku数据
+     * @param sku
      * @return
      */
     @PostMapping
-    Result add(@RequestBody Spec spec);
+    Result add(@RequestBody Sku sku);
 
     /***
-     * 根据ID查询Spec数据
+     * 根据ID查询Sku数据
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    Result<Spec> findById(@PathVariable Integer id);
+    Result<Sku> findById(@PathVariable String id);
 
     /***
-     * 查询Spec全部数据
+     * 查询Sku全部数据
      * @return
      */
     @GetMapping
-    Result<List<Spec>> findAll();
+    Result<List<Sku>> findAll();
 }

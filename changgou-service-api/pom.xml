@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>changgou-service-goods-api</module>
+        <module>changgou-service-search-api</module>
     </modules>
     <dependencies>
         <!--对changgou-common的依赖-->

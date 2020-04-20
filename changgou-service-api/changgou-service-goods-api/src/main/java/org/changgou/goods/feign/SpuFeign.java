@@ -1,9 +1,9 @@
 package org.changgou.goods.feign;
+
 import com.changgou.utils.Result;
 import com.github.pagehelper.PageInfo;
-import org.changgou.goods.pojo.CategoryBrand;
+import org.changgou.goods.pojo.Spu;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,21 +14,21 @@ import java.util.List;
  * @Date 2019/6/18 13:58
  *****/
 @FeignClient(name="user")
-@RequestMapping("/categoryBrand")
-public interface CategoryBrandFeign {
+@RequestMapping("/spu")
+public interface SpuFeign {
 
     /***
-     * CategoryBrand分页条件搜索实现
-     * @param categoryBrand
+     * Spu分页条件搜索实现
+     * @param spu
      * @param page
      * @param size
      * @return
      */
     @PostMapping(value = "/search/{page}/{size}" )
-    Result<PageInfo> findPage(@RequestBody(required = false) CategoryBrand categoryBrand, @PathVariable  int page, @PathVariable  int size);
+    Result<PageInfo> findPage(@RequestBody(required = false) Spu spu, @PathVariable  int page, @PathVariable  int size);
 
     /***
-     * CategoryBrand分页搜索实现
+     * Spu分页搜索实现
      * @param page:当前页
      * @param size:每页显示多少条
      * @return
@@ -38,11 +38,11 @@ public interface CategoryBrandFeign {
 
     /***
      * 多条件搜索品牌数据
-     * @param categoryBrand
+     * @param spu
      * @return
      */
     @PostMapping(value = "/search" )
-    Result<List<CategoryBrand>> findList(@RequestBody(required = false) CategoryBrand categoryBrand);
+    Result<List<Spu>> findList(@RequestBody(required = false) Spu spu);
 
     /***
      * 根据ID删除品牌数据
@@ -50,37 +50,37 @@ public interface CategoryBrandFeign {
      * @return
      */
     @DeleteMapping(value = "/{id}" )
-    Result delete(@PathVariable Integer id);
+    Result delete(@PathVariable String id);
 
     /***
-     * 修改CategoryBrand数据
-     * @param categoryBrand
+     * 修改Spu数据
+     * @param spu
      * @param id
      * @return
      */
     @PutMapping(value="/{id}")
-    Result update(@RequestBody CategoryBrand categoryBrand,@PathVariable Integer id);
+    Result update(@RequestBody Spu spu,@PathVariable String id);
 
     /***
-     * 新增CategoryBrand数据
-     * @param categoryBrand
+     * 新增Spu数据
+     * @param spu
      * @return
      */
     @PostMapping
-    Result add(@RequestBody CategoryBrand categoryBrand);
+    Result add(@RequestBody Spu spu);
 
     /***
-     * 根据ID查询CategoryBrand数据
+     * 根据ID查询Spu数据
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    Result<CategoryBrand> findById(@PathVariable Integer id);
+    Result<Spu> findById(@PathVariable String id);
 
     /***
-     * 查询CategoryBrand全部数据
+     * 查询Spu全部数据
      * @return
      */
     @GetMapping
-    Result<List<CategoryBrand>> findAll();
+    Result<List<Spu>> findAll();
 }

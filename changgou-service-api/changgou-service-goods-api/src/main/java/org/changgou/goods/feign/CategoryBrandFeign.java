@@ -1,9 +1,9 @@
 package org.changgou.goods.feign;
+
 import com.changgou.utils.Result;
 import com.github.pagehelper.PageInfo;
-import org.changgou.goods.pojo.Para;
+import org.changgou.goods.pojo.CategoryBrand;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,21 +14,21 @@ import java.util.List;
  * @Date 2019/6/18 13:58
  *****/
 @FeignClient(name="user")
-@RequestMapping("/para")
-public interface ParaFeign {
+@RequestMapping("/categoryBrand")
+public interface CategoryBrandFeign {
 
     /***
-     * Para分页条件搜索实现
-     * @param para
+     * CategoryBrand分页条件搜索实现
+     * @param categoryBrand
      * @param page
      * @param size
      * @return
      */
     @PostMapping(value = "/search/{page}/{size}" )
-    Result<PageInfo> findPage(@RequestBody(required = false) Para para, @PathVariable  int page, @PathVariable  int size);
+    Result<PageInfo> findPage(@RequestBody(required = false) CategoryBrand categoryBrand, @PathVariable  int page, @PathVariable  int size);
 
     /***
-     * Para分页搜索实现
+     * CategoryBrand分页搜索实现
      * @param page:当前页
      * @param size:每页显示多少条
      * @return
@@ -38,11 +38,11 @@ public interface ParaFeign {
 
     /***
      * 多条件搜索品牌数据
-     * @param para
+     * @param categoryBrand
      * @return
      */
     @PostMapping(value = "/search" )
-    Result<List<Para>> findList(@RequestBody(required = false) Para para);
+    Result<List<CategoryBrand>> findList(@RequestBody(required = false) CategoryBrand categoryBrand);
 
     /***
      * 根据ID删除品牌数据
@@ -53,34 +53,34 @@ public interface ParaFeign {
     Result delete(@PathVariable Integer id);
 
     /***
-     * 修改Para数据
-     * @param para
+     * 修改CategoryBrand数据
+     * @param categoryBrand
      * @param id
      * @return
      */
     @PutMapping(value="/{id}")
-    Result update(@RequestBody Para para,@PathVariable Integer id);
+    Result update(@RequestBody CategoryBrand categoryBrand,@PathVariable Integer id);
 
     /***
-     * 新增Para数据
-     * @param para
+     * 新增CategoryBrand数据
+     * @param categoryBrand
      * @return
      */
     @PostMapping
-    Result add(@RequestBody Para para);
+    Result add(@RequestBody CategoryBrand categoryBrand);
 
     /***
-     * 根据ID查询Para数据
+     * 根据ID查询CategoryBrand数据
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    Result<Para> findById(@PathVariable Integer id);
+    Result<CategoryBrand> findById(@PathVariable Integer id);
 
     /***
-     * 查询Para全部数据
+     * 查询CategoryBrand全部数据
      * @return
      */
     @GetMapping
-    Result<List<Para>> findAll();
+    Result<List<CategoryBrand>> findAll();
 }

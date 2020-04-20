@@ -1,9 +1,9 @@
 package org.changgou.goods.feign;
+
 import com.changgou.utils.Result;
 import com.github.pagehelper.PageInfo;
-import org.changgou.goods.pojo.Category;
+import org.changgou.goods.pojo.UndoLog;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,21 +14,21 @@ import java.util.List;
  * @Date 2019/6/18 13:58
  *****/
 @FeignClient(name="user")
-@RequestMapping("/category")
-public interface CategoryFeign {
+@RequestMapping("/undoLog")
+public interface UndoLogFeign {
 
     /***
-     * Category分页条件搜索实现
-     * @param category
+     * UndoLog分页条件搜索实现
+     * @param undoLog
      * @param page
      * @param size
      * @return
      */
     @PostMapping(value = "/search/{page}/{size}" )
-    Result<PageInfo> findPage(@RequestBody(required = false) Category category, @PathVariable  int page, @PathVariable  int size);
+    Result<PageInfo> findPage(@RequestBody(required = false) UndoLog undoLog, @PathVariable  int page, @PathVariable  int size);
 
     /***
-     * Category分页搜索实现
+     * UndoLog分页搜索实现
      * @param page:当前页
      * @param size:每页显示多少条
      * @return
@@ -38,11 +38,11 @@ public interface CategoryFeign {
 
     /***
      * 多条件搜索品牌数据
-     * @param category
+     * @param undoLog
      * @return
      */
     @PostMapping(value = "/search" )
-    Result<List<Category>> findList(@RequestBody(required = false) Category category);
+    Result<List<UndoLog>> findList(@RequestBody(required = false) UndoLog undoLog);
 
     /***
      * 根据ID删除品牌数据
@@ -50,37 +50,37 @@ public interface CategoryFeign {
      * @return
      */
     @DeleteMapping(value = "/{id}" )
-    Result delete(@PathVariable Integer id);
+    Result delete(@PathVariable Long id);
 
     /***
-     * 修改Category数据
-     * @param category
+     * 修改UndoLog数据
+     * @param undoLog
      * @param id
      * @return
      */
     @PutMapping(value="/{id}")
-    Result update(@RequestBody Category category,@PathVariable Integer id);
+    Result update(@RequestBody UndoLog undoLog,@PathVariable Long id);
 
     /***
-     * 新增Category数据
-     * @param category
+     * 新增UndoLog数据
+     * @param undoLog
      * @return
      */
     @PostMapping
-    Result add(@RequestBody Category category);
+    Result add(@RequestBody UndoLog undoLog);
 
     /***
-     * 根据ID查询Category数据
+     * 根据ID查询UndoLog数据
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    Result<Category> findById(@PathVariable Integer id);
+    Result<UndoLog> findById(@PathVariable Long id);
 
     /***
-     * 查询Category全部数据
+     * 查询UndoLog全部数据
      * @return
      */
     @GetMapping
-    Result<List<Category>> findAll();
+    Result<List<UndoLog>> findAll();
 }

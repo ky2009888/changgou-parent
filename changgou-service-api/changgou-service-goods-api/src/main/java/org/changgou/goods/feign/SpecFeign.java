@@ -1,9 +1,9 @@
 package org.changgou.goods.feign;
+
 import com.changgou.utils.Result;
 import com.github.pagehelper.PageInfo;
-import org.changgou.goods.pojo.UndoLog;
+import org.changgou.goods.pojo.Spec;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,21 +14,21 @@ import java.util.List;
  * @Date 2019/6/18 13:58
  *****/
 @FeignClient(name="user")
-@RequestMapping("/undoLog")
-public interface UndoLogFeign {
+@RequestMapping("/spec")
+public interface SpecFeign {
 
     /***
-     * UndoLog分页条件搜索实现
-     * @param undoLog
+     * Spec分页条件搜索实现
+     * @param spec
      * @param page
      * @param size
      * @return
      */
     @PostMapping(value = "/search/{page}/{size}" )
-    Result<PageInfo> findPage(@RequestBody(required = false) UndoLog undoLog, @PathVariable  int page, @PathVariable  int size);
+    Result<PageInfo> findPage(@RequestBody(required = false) Spec spec, @PathVariable  int page, @PathVariable  int size);
 
     /***
-     * UndoLog分页搜索实现
+     * Spec分页搜索实现
      * @param page:当前页
      * @param size:每页显示多少条
      * @return
@@ -38,11 +38,11 @@ public interface UndoLogFeign {
 
     /***
      * 多条件搜索品牌数据
-     * @param undoLog
+     * @param spec
      * @return
      */
     @PostMapping(value = "/search" )
-    Result<List<UndoLog>> findList(@RequestBody(required = false) UndoLog undoLog);
+    Result<List<Spec>> findList(@RequestBody(required = false) Spec spec);
 
     /***
      * 根据ID删除品牌数据
@@ -50,37 +50,37 @@ public interface UndoLogFeign {
      * @return
      */
     @DeleteMapping(value = "/{id}" )
-    Result delete(@PathVariable Long id);
+    Result delete(@PathVariable Integer id);
 
     /***
-     * 修改UndoLog数据
-     * @param undoLog
+     * 修改Spec数据
+     * @param spec
      * @param id
      * @return
      */
     @PutMapping(value="/{id}")
-    Result update(@RequestBody UndoLog undoLog,@PathVariable Long id);
+    Result update(@RequestBody Spec spec,@PathVariable Integer id);
 
     /***
-     * 新增UndoLog数据
-     * @param undoLog
+     * 新增Spec数据
+     * @param spec
      * @return
      */
     @PostMapping
-    Result add(@RequestBody UndoLog undoLog);
+    Result add(@RequestBody Spec spec);
 
     /***
-     * 根据ID查询UndoLog数据
+     * 根据ID查询Spec数据
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    Result<UndoLog> findById(@PathVariable Long id);
+    Result<Spec> findById(@PathVariable Integer id);
 
     /***
-     * 查询UndoLog全部数据
+     * 查询Spec全部数据
      * @return
      */
     @GetMapping
-    Result<List<UndoLog>> findAll();
+    Result<List<Spec>> findAll();
 }
