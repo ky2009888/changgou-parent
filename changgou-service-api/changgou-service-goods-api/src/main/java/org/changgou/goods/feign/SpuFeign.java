@@ -14,7 +14,7 @@ import java.util.List;
  * @Date 2019/6/18 13:58
  *****/
 @FeignClient(name="user")
-@RequestMapping("/spu")
+@RequestMapping("/spuf")
 public interface SpuFeign {
 
     /***

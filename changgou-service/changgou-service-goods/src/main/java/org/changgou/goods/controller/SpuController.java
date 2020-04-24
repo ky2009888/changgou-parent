@@ -20,7 +20,7 @@ import java.util.Map;
  *****/
 @Api(value = "SpuController")
 @RestController
-@RequestMapping("/spu")
+@RequestMapping("/spuc")
 @CrossOrigin
 public class SpuController {
 
@@ -33,7 +33,7 @@ public class SpuController {
      * @param spuId
      * @return Result
      */
-    @GetMapping
+    @GetMapping("/auditGoods")
     public Result<Goods> auditGoods(String spuId) {
         boolean goods = spuService.auditGoods(spuId);
         return new Result<Goods>(goods, StatusCode.OK, "审核成功");
@@ -45,7 +45,7 @@ public class SpuController {
      * @param spuId
      * @return Result
      */
-    @GetMapping
+    @GetMapping("/pullGoods")
     public Result<Goods> pullGoods(String spuId) {
         boolean goods = spuService.pullGoods(spuId);
         return new Result<Goods>(goods, StatusCode.OK, "下架成功");
@@ -57,7 +57,7 @@ public class SpuController {
      * @param spuIds
      * @return Result
      */
-    @GetMapping
+    @GetMapping("/batchPushGoods")
     public Result<Map<String, Boolean>> batchPushGoods(String[] spuIds) {
         List<Map<String, Boolean>> mapList = spuService.batchPushGoods(spuIds);
         return new Result<Map<String, Boolean>>(true, StatusCode.OK, "批量上架成功", mapList);
@@ -69,7 +69,7 @@ public class SpuController {
      * @param spuId
      * @return Result
      */
-    @GetMapping
+    @GetMapping("/pushGoods")
     public Result<Goods> pushGoods(String spuId) {
         boolean goods = spuService.pullGoods(spuId);
         return new Result<Goods>(goods, StatusCode.OK, "上架成功");
@@ -200,7 +200,7 @@ public class SpuController {
      * @return
      */
     @ApiOperation(value = "查询所有Spu", notes = "查询所Spu有方法详情", tags = {"SpuController"})
-    @GetMapping
+    @GetMapping("/findAll")
     public Result<List<Spu>> findAll() {
         //调用SpuService实现查询所有Spu
         List<Spu> list = spuService.findAll();

@@ -5,8 +5,10 @@ spring:
     name: changgou-service-search
   data:
     elasticsearch:
-      cluster-name: cluster-elasticsearch
+      cluster-name: cluster_elasticsearch
       cluster-nodes: 192.168.64.64:9300
+  main:
+    allow-bean-definition-overriding: true
 eureka:
   client:
     service-url:

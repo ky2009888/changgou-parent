@@ -5,6 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * 功能描述:
@@ -15,6 +20,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableEurekaClient
+@EnableFeignClients(basePackages = {"org.changgou.goods.feign"})
+@EnableElasticsearchRepositories(basePackages = {"org.changgou.search.dao"})
 @Slf4j
 public class ElasticSearchApplication {
     /**
@@ -29,4 +36,15 @@ public class ElasticSearchApplication {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
         SpringApplication.run(ElasticSearchApplication.class, args);
     }
+
+    /**
+     * 实例化
+     *
+     * @return RestTemplate
+     */
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
 }
