@@ -9,20 +9,24 @@ import org.changgou.goods.pojo.Sku;
 import org.changgou.search.dao.SkuEsMapper;
 import org.changgou.search.pojo.SkuInfo;
 import org.changgou.search.service.SkuService;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 功能描述:
@@ -62,8 +66,17 @@ public class SkuServiceImpl implements SkuService {
      * @return Map<String, Object>
      */
     @Override
-    public Map<String, Object> search(Map<String, Object> searchParamMap) {
-        NativeSearchQueryBuilder builder = null;
+    public Map<String, Object> search(Map<String, String> searchParamMap) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (searchParamMap == null) {
+            return null;
+        }
+        String keyWords = searchParamMap.get("keyWords");
+        if (StringUtils.isEmpty(keyWords)) {
+            return null;
+        }
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+        builder.withQuery(QueryBuilders.queryStringQuery(keyWords).field("name"));
         AggregatedPage<SkuInfo> page = elasticsearchTemplate.queryForPage(builder.build(), SkuInfo.class);
         //总的记录数量
         long totalRecords = page.getTotalElements();
@@ -71,11 +84,32 @@ public class SkuServiceImpl implements SkuService {
         long totalPage = page.getTotalPages();
         //总的内容
         List<SkuInfo> skuInfoList = page.getContent();
-        Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("totalRecords", totalRecords);
         resultMap.put("totalPage", totalPage);
         resultMap.put("skuInfoList", skuInfoList);
+        queryCategoryNameByGroup(resultMap, builder);
         return resultMap;
+    }
+
+    /**
+     * 进行分组查询
+     *
+     * @param resultMap 结果存放map
+     * @param builder   查询构建对象
+     */
+    private void queryCategoryNameByGroup(Map<String, Object> resultMap, NativeSearchQueryBuilder builder) {
+        //分组查询分类集合,terms里面的内容是取别名
+        builder.addAggregation(AggregationBuilders.terms("categoryNameGroup").field("categoryName"));
+        AggregatedPage aggregatedPage = elasticsearchTemplate.queryForPage(builder.build(), SkuInfo.class);
+        //获取聚合数据集合
+        StringTerms categoryNameGroup = aggregatedPage.getAggregations().get("categoryNameGroup");
+        List<String> categoryNameList = new ArrayList<>();
+        for (StringTerms.Bucket bucket : categoryNameGroup.getBuckets()
+        ) {
+            String categoryName = bucket.getKeyAsString();
+            categoryNameList.add(categoryName);
+        }
+        resultMap.put("categoryNameList", categoryNameList);
     }
 
     /**
