@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: changgou_gateway_web
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+        - id: changgou_goods_route
+          #uri: http://192.168.64.64:18081
+          #lb代表负载均衡，changgou_service_goods微服务的名称
+          uri: lb://changgou_service_goods
+          #路由规则配置
+          predicates:
+            - Path=/api/album/**,/api/brand/**,/api/cache/**,/api/categoryBrand/**,/api/category/**,/api/para/**,/api/pref/**,/api/sku/**,/api/spec/**,/api/spu/**,/api/stockBack/**,/api/template/**
+          filters:
+            #- PrefixPath=/brand
+            #请求路径中去掉一个前缀，/api
+            - StripPrefix=1
+  redis:
+    host: 192.168.64.64
+server:
+  port: 8001
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+  instance:
+    prefer-ip-address: true
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: true
