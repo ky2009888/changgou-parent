@@ -77,33 +77,34 @@ public class ${Table}Controller {
         List<${Table}> list = ${table}Service.findList(${table});
         return new Result<List<${Table}>>(true,StatusCode.OK,"查询成功",list);
     }
-
+    <#if swagger==true && keyType != "">
     /***
      * 根据ID删除品牌数据
      * @param id
      * @return
      */
-    <#if swagger==true>
     @ApiOperation(value = "${Table}根据ID删除",notes = "根据ID删除${Table}方法详情",tags = {"${Table}Controller"})
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "${keyType}")
     </#if>
+    <#if keyType != "">
     @DeleteMapping(value = "/{id}" )
     public Result delete(@PathVariable ${keyType} id){
         //调用${Table}Service实现根据主键删除
         ${table}Service.delete(id);
         return new Result(true,StatusCode.OK,"删除成功");
     }
-
+    </#if>
+    <#if swagger==true && keyType != "">
     /***
      * 修改${Table}数据
      * @param ${table}
      * @param id
      * @return
      */
-    <#if swagger==true>
     @ApiOperation(value = "${Table}根据ID修改",notes = "根据ID修改${Table}方法详情",tags = {"${Table}Controller"})
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "${keyType}")
     </#if>
+     <#if keyType != "">
     @PutMapping(value="/{id}")
     public Result update(@RequestBody <#if swagger==true>@ApiParam(name = "${Table}对象",value = "传入JSON数据",required = false)</#if> ${Table} ${table},@PathVariable ${keyType} id){
         //设置主键值
@@ -112,7 +113,7 @@ public class ${Table}Controller {
         ${table}Service.update(${table});
         return new Result(true,StatusCode.OK,"修改成功");
     }
-
+    </#if>
     /***
      * 新增${Table}数据
      * @param ${table}
@@ -127,23 +128,23 @@ public class ${Table}Controller {
         ${table}Service.add(${table});
         return new Result(true,StatusCode.OK,"添加成功");
     }
-
+    <#if swagger==true && keyType != ""  >
     /***
      * 根据ID查询${Table}数据
      * @param id
      * @return
      */
-    <#if swagger==true>
     @ApiOperation(value = "${Table}根据ID查询",notes = "根据ID查询${Table}方法详情",tags = {"${Table}Controller"})
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键ID", required = true, dataType = "${keyType}")
     </#if>
+     <#if keyType != "">
     @GetMapping("/{id}")
     public Result<${Table}> findById(@PathVariable ${keyType} id){
         //调用${Table}Service实现根据主键查询${Table}
         ${Table} ${table} = ${table}Service.findById(id);
         return new Result<${Table}>(true,StatusCode.OK,"查询成功",${table});
     }
-
+    </#if>
     /***
      * 查询${Table}全部数据
      * @return

@@ -32,13 +32,13 @@ public interface ${Table}Service {
      * @return
      */
     List<${Table}> findList(${Table} ${table});
-
+    <#if keyType != "">
     /***
      * 删除${Table}
      * @param id
      */
     void delete(${keyType} id);
-
+    </#if>
     /***
      * 修改${Table}数据
      * @param ${table}
@@ -50,14 +50,14 @@ public interface ${Table}Service {
      * @param ${table}
      */
     void add(${Table} ${table});
-
+     <#if keyType != "">
     /**
      * 根据ID查询${Table}
      * @param id
      * @return
      */
-     ${Table} findById(${keyType} id);
-
+   ${Table} findById(${keyType} id);
+   </#if>
     /***
      * 查询所有${Table}
      * @return

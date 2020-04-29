@@ -88,16 +88,16 @@ public class ${Table}ServiceImpl implements ${Table}Service {
         }
         return example;
     }
-
-    /**
-     * 删除
-     * @param id
-     */
-    @Override
-    public void delete(${keyType} id){
-        ${table}Mapper.deleteByPrimaryKey(id);
-    }
-
+    <#if keyType != "">
+        /**
+         * 删除
+         * @param id
+         */
+        @Override
+        public void delete(${keyType} id){
+            ${table}Mapper.deleteByPrimaryKey(id);
+        }
+    </#if>
     /**
      * 修改${Table}
      * @param ${table}
@@ -115,17 +115,17 @@ public class ${Table}ServiceImpl implements ${Table}Service {
     public void add(${Table} ${table}){
         ${table}Mapper.insert(${table});
     }
-
-    /**
-     * 根据ID查询${Table}
-     * @param id
-     * @return
-     */
-    @Override
-    public ${Table} findById(${keyType} id){
-        return  ${table}Mapper.selectByPrimaryKey(id);
-    }
-
+    <#if keyType != "" >
+        /**
+         * 根据ID查询${Table}
+         * @param id
+         * @return
+         */
+        @Override
+        public ${Table} findById(${keyType} id){
+            return  ${table}Mapper.selectByPrimaryKey(id);
+        }
+    </#if>
     /**
      * 查询${Table}全部数据
      * @return

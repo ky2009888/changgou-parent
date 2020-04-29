@@ -15,6 +15,7 @@
         <module>changgou-service-file</module>
         <module>changgou-service-cannal</module>
         <module>changgou-service-search</module>
+        <module>changgou-service-users</module>
     </modules>
     <dependencies>
         <!--对changgou-common的依赖-->
