@@ -14,17 +14,16 @@ import java.util.Date;
  * 项目名称:changgou-parent
  * 创建日期:2020/4/29
  */
-@Data
 public class JwtUtils {
 
     /**
      * 秘钥
      */
-    private String KEY = "ky2009666";
+    private static final String KEY = "ky2009666";
     /**
      * 超时时间30分钟
      */
-    private long TTL = 30 * 60 * 1000L;
+    private static final long TTL = 30 * 60 * 1000L;
 
     /**
      * 生成JWT
@@ -34,7 +33,7 @@ public class JwtUtils {
      * @param roles
      * @return
      */
-    public String createJWT(String id, String subject, String roles) {
+    public static String createJWT(String id, String subject, String roles) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         JwtBuilder jwt = Jwts.builder().setId(id)
@@ -60,14 +59,12 @@ public class JwtUtils {
      * @param jwtStr
      * @return
      */
-    public Claims parseJWT(String jwtStr) {
+    public static Claims parseJWT(String jwtStr) {
         return Jwts.parser()
                 .setSigningKey(KEY)
                 .parseClaimsJws(jwtStr)
                 .getBody();
     }
-
-
 }
 
 
