@@ -1,6 +1,9 @@
 package org.changgou.user.controller;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.crypto.digest.BCrypt;
+import com.alibaba.fastjson.JSON;
+import com.changgou.utils.JwtUtils;
 import org.changgou.user.pojo.User;
 import org.changgou.user.service.UserService;
 import com.github.pagehelper.PageInfo;
@@ -10,8 +13,13 @@ import io.swagger.annotations.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /****
  * @Author:lenovo
@@ -28,14 +36,26 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/login")
-    public Result<String> login(String userName, String password) {
+    public Result<String> login(String userName, String password, HttpServletResponse response) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return new Result(true, StatusCode.ACCESSERROR, "用户或密码错误", null);
         }
         User user = userService.findById(userName);
         String pw_hash = BCrypt.hashpw(password, BCrypt.gensalt());
-        if (BCrypt.checkpw(password,pw_hash)) {
-            return new Result(true, StatusCode.OK, "登录成功", null);
+        if (BCrypt.checkpw(password, pw_hash)) {
+            //用户认证成功之后，创建用户令牌信息
+            Map<String, Object> tokenMap = new HashMap<>();
+            tokenMap.put("roles", "USER");
+            tokenMap.put("success", "SUCCESS");
+            tokenMap.put("userName", userName);
+            String token = JwtUtils.createJWT(UUID.fastUUID().toString(), JSON.toJSONString(tokenMap), "USER");
+            Cookie tokenCookie = new Cookie("Authorization", token);
+            tokenCookie.setDomain("localhost");
+            tokenCookie.setPath("/");
+            response.addCookie(tokenCookie);
+            //把令牌信息存入cookie中
+            //把令牌作为参数传递给用户
+            return new Result(true, StatusCode.OK, "登录成功", token);
         }
         return new Result(true, StatusCode.ACCESSERROR, "登录失败", null);
     }
