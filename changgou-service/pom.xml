@@ -16,6 +16,7 @@
         <module>changgou-service-cannal</module>
         <module>changgou-service-search</module>
         <module>changgou-service-users</module>
+        <module>changgou-user-oauth</module>
     </modules>
     <dependencies>
         <!--对changgou-common的依赖-->
