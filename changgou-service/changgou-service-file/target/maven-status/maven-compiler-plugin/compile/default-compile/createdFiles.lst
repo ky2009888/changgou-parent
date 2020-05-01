@@ -1,0 +1,4 @@
+org\changgou\service\file\util\FastDfsClient.class
+org\changgou\service\file\controller\FileController.class
+org\changgou\service\file\ServiceFileApplication.class
+org\changgou\service\file\po\FastDfsFile.class

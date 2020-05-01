@@ -1,0 +1,11 @@
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\controller\AuthController.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\service\impl\AuthServiceImpl.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\config\AuthorizationServerConfig.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\config\UserDetailsServiceImpl.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\util\CookieUtil.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\SystemApplication.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\util\AuthToken.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\config\CustomUserAuthenticationConverter.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\config\WebSecurityConfig.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\service\AuthService.java
+F:\workspace-2020-changgou\changgou-parent\changgou-service\changgou-user-oauth\src\main\java\org\changgou\oath\util\UserJwt.java

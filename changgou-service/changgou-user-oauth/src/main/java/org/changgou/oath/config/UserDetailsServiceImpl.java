@@ -1,6 +1,6 @@
 package org.changgou.oath.config;
 
-import com.changgou.oauth.util.UserJwt;
+import org.changgou.oath.util.UserJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
