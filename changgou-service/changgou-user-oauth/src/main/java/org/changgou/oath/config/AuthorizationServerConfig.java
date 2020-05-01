@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.bootstrap.encrypt.KeyProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -93,9 +94,13 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     }
 
 
-    //读取密钥的配置
+    /**
+     * 读取密钥的配置
+     *
+     * @return KeyProperties
+     */
     @Bean("keyProp")
-    public KeyProperties keyProperties(){
+    public KeyProperties keyProperties() {
         return new KeyProperties();
     }
 
@@ -122,6 +127,10 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter(CustomUserAuthenticationConverter customUserAuthenticationConverter) {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        //修复初始化的时候，无法自动初始化的问题
+        if (keyProperties == null) {
+            keyProperties = keyProperties();
+        }
         KeyPair keyPair = new KeyStoreKeyFactory(
                 keyProperties.getKeyStore().getLocation(),                          //证书路径 changgou.jks
                 keyProperties.getKeyStore().getSecret().toCharArray())              //证书秘钥 changgouapp

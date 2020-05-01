@@ -13,6 +13,9 @@ import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @author Lenovo
+ */
 @Component
 public class CustomUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
 

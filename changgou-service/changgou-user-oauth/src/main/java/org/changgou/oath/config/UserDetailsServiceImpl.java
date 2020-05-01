@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 /*****
  * 自定义授权认证类
+ * @author Lenovo
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
