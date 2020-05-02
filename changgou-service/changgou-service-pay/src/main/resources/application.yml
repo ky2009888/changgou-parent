@@ -27,7 +27,7 @@ hystrix:
 #配置微信支付信息,此处需要真实的信息
 weixin:
   #应用的ID
-  appid: wx8397f8696b5338317
+  appid: wx8397f8696b538317
   #商户的ID
   partner: 1473426802
   #秘钥
