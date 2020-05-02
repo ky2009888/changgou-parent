@@ -17,6 +17,7 @@
         <module>changgou-service-search</module>
         <module>changgou-service-users</module>
         <module>changgou-user-oauth</module>
+        <module>changgou-service-pay</module>
     </modules>
     <dependencies>
         <!--对changgou-common的依赖-->

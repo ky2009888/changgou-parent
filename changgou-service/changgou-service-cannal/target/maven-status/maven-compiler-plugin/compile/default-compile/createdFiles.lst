@@ -1,4 +1,0 @@
-com\changgou\config\RedisConfig.class
-com\changgou\CanalApplication.class
-com\changgou\listener\BusinessDataListener.class
-com\changgou\util\RedisUtil.class

@@ -1,6 +1,0 @@
-org\changgou\search\TestIf.class
-org\changgou\search\service\SkuService.class
-org\changgou\search\ElasticSearchApplication.class
-org\changgou\search\service\impl\SkuServiceImpl.class
-org\changgou\search\dao\SkuEsMapper.class
-org\changgou\search\controller\SkuController.class

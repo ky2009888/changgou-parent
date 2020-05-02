@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 import org.changgou.oath.service.AuthService;
 import org.changgou.oath.util.AuthToken;
 import org.changgou.oath.util.CookieUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,4 +69,5 @@ public class AuthController {
     private void saveJtiToCookie(String jti, HttpServletResponse response) {
         CookieUtil.addCookie(response,cookieDomain,"/","uid",jti,cookieMaxAge,false);
     }
+
 }

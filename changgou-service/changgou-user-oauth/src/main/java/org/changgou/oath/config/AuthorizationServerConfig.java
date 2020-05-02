@@ -132,11 +132,15 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
             keyProperties = keyProperties();
         }
         KeyPair keyPair = new KeyStoreKeyFactory(
-                keyProperties.getKeyStore().getLocation(),                          //证书路径 changgou.jks
-                keyProperties.getKeyStore().getSecret().toCharArray())              //证书秘钥 changgouapp
+                //证书路径 changgou.jks
+                keyProperties.getKeyStore().getLocation(),
+                //证书秘钥 changgouapp
+                keyProperties.getKeyStore().getSecret().toCharArray())
                 .getKeyPair(
-                        keyProperties.getKeyStore().getAlias(),                     //证书别名 changgou
-                        keyProperties.getKeyStore().getPassword().toCharArray());   //证书密码 changgou
+                        //证书别名 changgou
+                        keyProperties.getKeyStore().getAlias(),
+                        //证书密码 changgou
+                        keyProperties.getKeyStore().getPassword().toCharArray());
         converter.setKeyPair(keyPair);
         //配置自定义的CustomUserAuthenticationConverter
         DefaultAccessTokenConverter accessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();

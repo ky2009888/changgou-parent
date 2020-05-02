@@ -1,11 +1,14 @@
 package org.changgou.oath.util;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 
 
 /**
  * @author Lenovo
  */
+@ToString
 public class AuthToken implements Serializable {
 
     /**
