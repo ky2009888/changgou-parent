@@ -17,4 +17,20 @@ public interface WeiXinPayService {
      * @return Map
      */
     Map createNative(Map<String, String> paramMap) throws Exception;
+
+    /**
+     * 进行订单查询
+     *
+     * @param orderId 订单号
+     * @return 订单号
+     */
+    Map queryOrder(String orderId);
+
+    /**
+     * 订单关闭
+     *
+     * @param orderId 订单号
+     * @return 订单号
+     */
+    Map closeOrder(String orderId);
 }

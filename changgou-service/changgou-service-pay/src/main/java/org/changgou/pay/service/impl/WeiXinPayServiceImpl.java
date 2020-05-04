@@ -1,26 +1,23 @@
 package org.changgou.pay.service.impl;
 
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.IdUtil;
+import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.util.EntityUtils;
 import org.changgou.pay.service.WeiXinPayService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.io.InputStream;
-import java.net.URI;
+import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -52,6 +49,11 @@ public class WeiXinPayServiceImpl implements WeiXinPayService {
      */
     @Value("${weixin.notifyurl}")
     private String notifyurl;
+    /**
+     * 定义微信支付的服务
+     */
+    @Resource
+    private WXPay wxPay;
 
     /**
      * 创建二维码
@@ -79,7 +81,48 @@ public class WeiXinPayServiceImpl implements WeiXinPayService {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpResponse httpResponse = httpClient.execute(httpPost);
         HttpEntity responseEntity = httpResponse.getEntity();
-        String responseContent = EntityUtils.toString(responseEntity,"UTF-8");
+        String responseContent = EntityUtils.toString(responseEntity, "UTF-8");
         return WXPayUtil.xmlToMap(responseContent);
+    }
+
+    /**
+     * 进行订单查询
+     *
+     * @param orderId 订单号
+     * @return 订单号
+     */
+    @Override
+    public Map queryOrder(String orderId) {
+        try {
+            if (StringUtils.isEmpty(orderId)) {
+                return null;
+            }
+            Map<String, String> map = new HashMap();
+            map.put("out_trade_no", orderId);
+            Map<String, String> resultMap = wxPay.orderQuery(map);
+            return resultMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 订单关闭
+     *
+     * @param orderId 订单号
+     * @return 订单号
+     */
+    @Override
+    public Map closeOrder(String orderId) {
+        try {
+            Map<String, String> map = new HashMap();
+            map.put("out_trade_no", orderId);
+            Map<String, String> resultMap = wxPay.closeOrder(map);
+            return resultMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
