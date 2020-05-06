@@ -1,21 +1,21 @@
 package com.changgou.order.service.impl;
 
 import com.changgou.order.dao.ReturnCauseMapper;
-import com.changgou.order.service.ReturnCauseService;
 import com.changgou.order.pojo.ReturnCause;
+import com.changgou.order.service.ReturnCauseService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ReturnCauseServiceImpl implements ReturnCauseService {
 
-    @Autowired
+    @Resource
     private ReturnCauseMapper returnCauseMapper;
 
     /**

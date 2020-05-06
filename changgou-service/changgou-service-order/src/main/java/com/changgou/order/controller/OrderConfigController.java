@@ -1,12 +1,14 @@
 package com.changgou.order.controller;
-import com.changgou.entity.PageResult;
-import com.changgou.entity.Result;
-import com.changgou.entity.StatusCode;
-import com.changgou.order.service.OrderConfigService;
+
 import com.changgou.order.pojo.OrderConfig;
+import com.changgou.order.service.OrderConfigService;
+import com.changgou.utils.PageResult;
+import com.changgou.utils.Result;
+import com.changgou.utils.StatusCode;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 @RestController

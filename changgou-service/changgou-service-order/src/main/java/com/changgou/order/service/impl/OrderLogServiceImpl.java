@@ -1,21 +1,21 @@
 package com.changgou.order.service.impl;
 
 import com.changgou.order.dao.OrderLogMapper;
-import com.changgou.order.service.OrderLogService;
 import com.changgou.order.pojo.OrderLog;
+import com.changgou.order.service.OrderLogService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class OrderLogServiceImpl implements OrderLogService {
 
-    @Autowired
+    @Resource
     private OrderLogMapper orderLogMapper;
 
     /**

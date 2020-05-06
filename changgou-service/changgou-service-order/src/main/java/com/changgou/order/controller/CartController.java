@@ -1,9 +1,9 @@
 package com.changgou.order.controller;
 
-import com.changgou.entity.Result;
-import com.changgou.entity.StatusCode;
 import com.changgou.order.config.TokenDecode;
 import com.changgou.order.service.CartService;
+import com.changgou.utils.Result;
+import com.changgou.utils.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

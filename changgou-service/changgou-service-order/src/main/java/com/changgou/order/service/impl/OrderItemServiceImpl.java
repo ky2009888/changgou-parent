@@ -1,21 +1,21 @@
 package com.changgou.order.service.impl;
 
 import com.changgou.order.dao.OrderItemMapper;
-import com.changgou.order.service.OrderItemService;
 import com.changgou.order.pojo.OrderItem;
+import com.changgou.order.service.OrderItemService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
 
-    @Autowired
+    @Resource
     private OrderItemMapper orderItemMapper;
 
     /**

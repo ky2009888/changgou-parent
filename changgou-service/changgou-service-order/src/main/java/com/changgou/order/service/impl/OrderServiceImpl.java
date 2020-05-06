@@ -1,24 +1,22 @@
 package com.changgou.order.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fescar.spring.annotation.GlobalTransactional;
-import com.changgou.goods.feign.SkuFeign;
 import com.changgou.order.config.RabbitMQConfig;
 import com.changgou.order.dao.*;
 import com.changgou.order.pojo.*;
 import com.changgou.order.service.CartService;
 import com.changgou.order.service.OrderService;
-import com.changgou.pay.feign.PayFeign;
-import com.changgou.util.IdWorker;
+import com.changgou.utils.IdWorker;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.changgou.goods.feign.SkuFeign;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,7 +26,7 @@ import java.util.Map;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
+    @Resource
     private OrderMapper orderMapper;
 
     /**
@@ -50,25 +48,25 @@ public class OrderServiceImpl implements OrderService {
         return  orderMapper.selectByPrimaryKey(id);
     }
 
-    @Autowired
+    @Resource
     private CartService cartService;
 
-    @Autowired
+    @Resource
     private IdWorker idWorker;
 
-    @Autowired
+    @Resource
     private OrderItemMapper orderItemMapper;
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
-    @Autowired
+    @Resource
     private SkuFeign skuFeign;
 
-    @Autowired
+    @Resource
     private TaskMapper taskMapper;
 
-    @Autowired
+    @Resource
     private RabbitTemplate rabbitTemplate;
 
     /**
@@ -76,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
      * @param order
      */
     @Override
-    @GlobalTransactional(name = "order_add")
+    /*@GlobalTransactional(name = "order_add")*/
     public String add(Order order){
         //1.获取购物车的相关数据(redis)
         Map cartMap = cartService.list(order.getUsername());
@@ -107,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         //扣减库存并增加销量
-        skuFeign.decrCount(order.getUsername());
+        //skuFeign.decrCount(order.getUsername());
 
         //int i =1/0;
         //添加任务数据
@@ -190,7 +188,7 @@ public class OrderServiceImpl implements OrderService {
         return (Page<Order>)orderMapper.selectByExample(example);
     }
 
-    @Autowired
+    @Resource
     private OrderLogMapper orderLogMapper;
 
     @Override
@@ -223,8 +221,8 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    @Autowired
-    private PayFeign payFeign;
+    /*@Resource
+    private PayFeign payFeign;*/
 
     @Override
     @Transactional
@@ -247,7 +245,8 @@ public class OrderServiceImpl implements OrderService {
         System.out.println("关闭订单校验通过:"+orderId);
 
         //基于微信查询订单信息
-       Map wxQueryMap = (Map) payFeign.queryOrder(orderId).getData();
+       Map wxQueryMap = null;
+       //(Map) payFeign.queryOrder(orderId).getData();
        System.out.println("查询微信支付订单:"+wxQueryMap);
 
        //如果订单的支付状态为已支付,进行数据补偿(mysql)
@@ -278,11 +277,11 @@ public class OrderServiceImpl implements OrderService {
             List<OrderItem> orderItemList = orderItemMapper.select(_orderItem);
 
             for (OrderItem orderItem : orderItemList) {
-                skuFeign.resumeStockNum(orderItem.getSkuId(),orderItem.getNum());
+                //skuFeign.resumeStockNum(orderItem.getSkuId(),orderItem.getNum());
             }
 
             //基于微信关闭订单
-            payFeign.closeOrder(orderId);
+            //payFeign.closeOrder(orderId);
 
         }
 
@@ -359,7 +358,7 @@ public class OrderServiceImpl implements OrderService {
         orderLogMapper.insertSelective(orderLog);
     }
 
-    @Autowired
+    @Resource
     private OrderConfigMapper orderConfigMapper;
 
     @Override

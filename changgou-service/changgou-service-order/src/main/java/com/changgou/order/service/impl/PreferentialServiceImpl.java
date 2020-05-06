@@ -1,21 +1,21 @@
 package com.changgou.order.service.impl;
 
 import com.changgou.order.dao.PreferentialMapper;
-import com.changgou.order.service.PreferentialService;
 import com.changgou.order.pojo.Preferential;
+import com.changgou.order.service.PreferentialService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class PreferentialServiceImpl implements PreferentialService {
 
-    @Autowired
+    @Resource
     private PreferentialMapper preferentialMapper;
 
     /**

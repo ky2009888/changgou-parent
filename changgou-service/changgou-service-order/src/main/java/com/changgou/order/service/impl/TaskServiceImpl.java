@@ -6,19 +6,19 @@ import com.changgou.order.pojo.Task;
 import com.changgou.order.pojo.TaskHis;
 import com.changgou.order.service.TaskService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    @Autowired
+    @Resource
     private TaskHisMapper taskHisMapper;
 
-    @Autowired
+    @Resource
     private TaskMapper taskMapper;
 
     @Override

@@ -1,15 +1,15 @@
 package com.changgou.order.service.impl;
 
-import com.changgou.goods.feign.SkuFeign;
-import com.changgou.goods.feign.SpuFeign;
-import com.changgou.goods.pojo.Sku;
-import com.changgou.goods.pojo.Spu;
 import com.changgou.order.pojo.OrderItem;
 import com.changgou.order.service.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.changgou.goods.feign.SkuFeign;
+import org.changgou.goods.feign.SpuFeign;
+import org.changgou.goods.pojo.Sku;
+import org.changgou.goods.pojo.Spu;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +19,13 @@ public class CartServiceImpl implements CartService {
 
     private static final String CART="cart_";
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
-    @Autowired
+    @Resource
     private SkuFeign skuFeign;
 
-    @Autowired
+    @Resource
     private SpuFeign spuFeign;
 
 
@@ -46,7 +46,8 @@ public class CartServiceImpl implements CartService {
         }else {
             //3.如果当前商品在redis中不存在,将商品添加到redis中
             Sku sku = skuFeign.findById(skuId).getData();
-            Spu spu = spuFeign.findSpuById(sku.getSpuId()).getData();
+            Spu spu = null;
+            //spuFeign.findSpuById(sku.getSpuId()).getData();
 
             //封装orderItem
            orderItem = this.sku2OrderItem(sku,spu,num);

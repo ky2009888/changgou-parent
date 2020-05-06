@@ -1,6 +1,6 @@
 package com.changgou.order.controller;
-import com.changgou.entity.Result;
-import com.changgou.entity.StatusCode;
+import com.changgou.utils.Result;
+import com.changgou.utils.StatusCode;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
