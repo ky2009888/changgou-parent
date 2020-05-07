@@ -3,6 +3,7 @@ package org.changgou.goods;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -16,7 +17,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan(basePackages = {"org.changgou.goods.dao"})
-//@EnableFeignClients
+@EnableFeignClients
 public class GoodsApplication {
     /**
      * 入口方法

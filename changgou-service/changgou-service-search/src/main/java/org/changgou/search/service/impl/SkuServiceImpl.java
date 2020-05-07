@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.changgou.utils.Result;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.changgou.goods.feign.SkuFeign;
 import org.changgou.search.dao.SkuEsMapper;
 import org.changgou.search.pojo.SkuInfo;
 import org.changgou.search.service.SkuService;

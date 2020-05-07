@@ -9,6 +9,7 @@ import com.changgou.order.service.OrderService;
 import com.changgou.utils.IdWorker;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.changgou.goods.feign.SkuFeign;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

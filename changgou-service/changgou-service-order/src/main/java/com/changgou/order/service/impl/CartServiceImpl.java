@@ -3,6 +3,8 @@ package com.changgou.order.service.impl;
 import com.changgou.order.pojo.OrderItem;
 import com.changgou.order.service.CartService;
 import io.seata.spring.annotation.GlobalTransactional;
+import org.changgou.goods.feign.SkuFeign;
+import org.changgou.goods.feign.SpuFeign;
 import org.changgou.goods.pojo.Sku;
 import org.changgou.goods.pojo.Spu;
 import org.springframework.data.redis.core.RedisTemplate;

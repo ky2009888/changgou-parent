@@ -1,4 +1,4 @@
-package com.changgou.goods.conf;
+package org.changgou.goods.conf;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.seata.rm.datasource.DataSourceProxy;
