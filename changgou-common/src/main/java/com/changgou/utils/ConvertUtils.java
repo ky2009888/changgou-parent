@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
  * 转换工具类
  */
 public class ConvertUtils {
-
     /**
      * 输入流转换为xml字符串
      *
