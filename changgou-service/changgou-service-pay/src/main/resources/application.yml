@@ -5,6 +5,12 @@ spring:
     name: changgou_service_pay
   rabbitmq:
     host: 192.168.64.64
+    port: 5672
+  #开启全局事务,这个名称要与changgou_service_seata的file.conf文件的中的 vgroup_mapping.my_test_tx_group = "my_service_tx_group"保持一致
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_service_tx_group
   main:
     #当遇到同样名字的时候，是否允许覆盖注册
     allow-bean-definition-overriding: true

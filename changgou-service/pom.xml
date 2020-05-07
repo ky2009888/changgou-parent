@@ -19,6 +19,7 @@
         <module>changgou-user-oauth</module>
         <module>changgou-service-pay</module>
         <module>changgou-service-order</module>
+        <module>changgou-service-seata</module>
     </modules>
     <dependencies>
         <!--对changgou-common的依赖-->
@@ -51,6 +52,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!-- spring-cloud-starter-alibaba-seata -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+            <version>2.1.1.RELEASE</version>
         </dependency>
     </dependencies>
 </project>

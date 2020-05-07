@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date 2019/6/18 13:58
  *****/
 @FeignClient(name="${serviceName}")
-@RequestMapping("/${table}")
+@RequestMapping("/${table}f")
 public interface ${Table}Feign {
 
     /***

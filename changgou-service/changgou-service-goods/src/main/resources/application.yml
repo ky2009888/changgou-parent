@@ -8,15 +8,19 @@ spring:
     url: jdbc:mysql://192.168.64.64:3306/changgou_goods?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: jliang83
+  #开启全局事务,这个名称要与changgou_service_seata的file.conf文件的中的 vgroup_mapping.my_test_tx_group = "my_service_tx_group"保持一致
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_service_tx_group
+  main:
+    allow-bean-definition-overriding: true
 eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:7001/eureka
   instance:
     prefer-ip-address: true
-feign:
-  hystrix:
-    enabled: true
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

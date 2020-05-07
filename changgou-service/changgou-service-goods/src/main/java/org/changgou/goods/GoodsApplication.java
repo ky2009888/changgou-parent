@@ -16,6 +16,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan(basePackages = {"org.changgou.goods.dao"})
+//@EnableFeignClients
 public class GoodsApplication {
     /**
      * 入口方法

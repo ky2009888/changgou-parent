@@ -4,6 +4,7 @@ import cn.hutool.core.map.MapUtil;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConstants;
 import com.github.wxpay.sdk.WXPayUtil;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -62,6 +63,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService {
      * @return Map
      */
     @Override
+    @GlobalTransactional
     public Map createNative(Map<String, String> paramMap) throws Exception {
         Map<String, String> param = MapUtil.newHashMap(32);
         param.put("appid", appid);

@@ -8,6 +8,11 @@ spring:
     url: jdbc:mysql://192.168.200.128:3306/changgou_order?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
+  #开启全局事务,这个名称要与changgou_service_seata的file.conf文件的中的 vgroup_mapping.my_test_tx_group = "my_service_tx_group"保持一致
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_service_tx_group
   main:
     allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
   redis:
